@@ -1,15 +1,14 @@
 import React from 'react';
 import Header from './Header';
 import Main from './Main';
+import Footer from './Footer';
 
 function App() {
   return (
     <div className="page">
       <Header />
       <Main />
-      <footer className="footer">
-        <p className="copyright">&copy; 2022 Mesto Russia</p>
-      </footer>
+      <Footer />
       <div className="popup popup_type_edit-profile">
         <div className="popup__container">
           <button className="popup__close-icon" type="button"></button>
