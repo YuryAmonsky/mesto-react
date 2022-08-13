@@ -1,11 +1,10 @@
-import logo from '../images/logo/logo.svg';
+import React from 'react';
+import Header from './Header';
 
 function App() {
   return (
     <div className="page">
-      <header className="header">
-        <img className="logo" src={logo} alt="Место" />
-      </header>
+      <Header />>
       <main className="content">
         <section className="profile">
           <div className="profile__avatar-container">
