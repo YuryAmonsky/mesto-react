@@ -1,0 +1,14 @@
+.header {
+  margin: 45px auto 0;
+  width: calc(100% - 38px);
+  min-width: 320px;
+  max-width: 880px;
+  border-bottom: 1px solid #545454;
+  display: flex;
+}
+
+@media screen and (max-width: 880px) {
+  .header {
+    margin-top: calc(28px + 17 * (100vw - 320px) / 560);
+  }
+}
