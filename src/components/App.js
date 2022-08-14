@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from './Header';
 import Main from './Main';
+import PopupWithForm from './PopupWithForm';
 import Footer from './Footer';
 
 function App() {
@@ -9,7 +10,37 @@ function App() {
       <Header />
       <Main />
       <Footer />
-      <div className="popup popup_type_edit-profile">
+      <PopupWithForm title="Редактировать профиль" name="edit-profile" children={<>
+        <input className="dialog-form__input dialog-form__input_type_edit-profile-name" name="inputEditProfileName"
+          id="input-edit-profile-name" type="text" placeholder="Имя" minlength="2" maxlength="40" required />
+        <span className="dialog-form__input-error input-edit-profile-name-error"></span>
+        <input className="dialog-form__input dialog-form__input_type_edit-profile-about-me" name="inputEditProfileAboutMe"
+          id="input-edit-profile-about-me" type="text" placeholder="О себе" minlength="2" maxlength="200" required />
+        <span className="dialog-form__input-error input-edit-profile-about-me-error"></span>
+        <button className="dialog-form__submit-button" type="submit" name="submitEditProfile"
+          formmethod="post">Сохранить</button></>
+      }/>
+      <PopupWithForm title="Обновить аватар" name="edit-avatar" children={<>
+        <input className="dialog-form__input dialog-form__input_type_edit-avatar" name="inputEditAvatar"
+          id="input-edit-avatar" type="url" placeholder="Ссылка на картинку" required />
+        <span className="dialog-form__input-error input-edit-avatar-error"></span>        
+        <button className="dialog-form__submit-button" type="submit" name="submitEditAvatar"
+          formmethod="post">Сохранить</button></>
+      }/>
+      <PopupWithForm title="Новое место" name="new-location" children={<>
+        <input className="dialog-form__input dialog-form__input_type_new-location-name" name="inputNewLocationName"
+          id="input-new-location-name" type="text" placeholder="Название" minlength="2" maxlength="30" required />
+        <span className="dialog-form__input-error input-new-location-name-error"></span>
+        <input className="dialog-form__input dialog-form__input_type_new-location-link" name="inputNewLocationLink"
+          id="input-new-location-link" type="url" placeholder="Ссылка на картинку" required />
+        <span className="dialog-form__input-error input-new-location-link-error"></span>
+        <button className="dialog-form__submit-button" type="submit" name="submitNewLocation"
+          formmethod="post">Создать</button></>
+      }/>
+      <PopupWithForm title="Вы уверены?" name="delete-location" children={<>
+        <button className="dialog-form__submit-button" type="submit" name="submitDeleteLocation">Да</button></>
+      }/>
+  {/*}    <div className="popup popup_type_edit-profile">
         <div className="popup__container">
           <button className="popup__close-icon" type="button"></button>
           <form className="dialog-form dialog-form_type_edit-profile" name="formEditProfile" novalidate>
@@ -63,7 +94,7 @@ function App() {
           </form>
         </div>
       </div>
-      <div className="popup popup_type_view-image">
+  {*/}<div className="popup popup_type_view-image">
         <div className="popup__container">
           <button className="popup__close-icon" type="button"></button>
           <img className="original-image" src="#" alt="" />
