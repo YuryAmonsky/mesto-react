@@ -12,7 +12,7 @@ function Main(props){
           <button className="profile__edit-button" type="button" onClick={props.onEditProfile}></button>
           <p className="profile__about-me"></p>
         </div>
-        <button className="profile__add-button" type="button" onClick={props.onAddPlace}></button>
+        <button className="profile__add-button" type="button" onClick={props.onNewLocation}></button>
       </section>
       <section aria-label="locations">
         <ul className="location-list">

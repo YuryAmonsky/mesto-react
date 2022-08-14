@@ -6,21 +6,26 @@ import PopupWithImage from './PopupWithImage';
 import Footer from './Footer';
 
 function App() {
+ 
+  
+  
 
-  const handleEditAvatarClick = ()=>{
-    const elementPopupvEditAvatar = document.querySelector('.popup_type_edit-avatar');
-    elementPopupvEditAvatar.classList.add('popup_opened');
-  }
+  const [isEditProfilePopupOpen, setEditProfilePopupState] = React.useState(false);
+  const [isEditAvatarPopupOpen, setEditAvatarPopupState] = React.useState(false);
+  const [isNewLocationPopupOpen, setNewLocationPopupState] = React.useState(false);
   
   const handleEditProfileClick = ()=>{
-    const elementPopupvEditProfile = document.querySelector('.popup_type_edit-profile');
-    elementPopupvEditProfile.classList.add('popup_opened');
+    setEditProfilePopupState(true);
   }
 
-  const handleAddPlaceClick = ()=>{
-    const elementPopupvNewLocation = document.querySelector('.popup_type_new-location');
-    elementPopupvNewLocation.classList.add('popup_opened');
+  const handleEditAvatarClick = ()=>{
+    setEditAvatarPopupState(true);
   }
+
+  const handleNewLocationClick = ()=>{
+    setNewLocationPopupState(true);
+  }
+  
 
   return (
     <div className="page">
@@ -28,12 +33,13 @@ function App() {
       <Main 
         onEditProfile = {handleEditProfileClick} 
         onEditAvatar = {handleEditAvatarClick} 
-        onAddPlace = {handleAddPlaceClick} 
+        onNewLocation = {handleNewLocationClick} 
       />
       <Footer />
       <PopupWithForm 
         title="Редактировать профиль" 
-        name="edit-profile"         
+        name="edit-profile"
+        isOpen = {isEditProfilePopupOpen} 
         children={<>
         <input className="dialog-form__input dialog-form__input_type_edit-profile-name" name="inputEditProfileName"
           id="input-edit-profile-name" type="text" placeholder="Имя" minlength="2" maxlength="40" required />
@@ -46,7 +52,8 @@ function App() {
       }/>
       <PopupWithForm 
         title="Обновить аватар" 
-        name="edit-avatar"         
+        name="edit-avatar" 
+        isOpen = {isEditAvatarPopupOpen} 
         children={<>
         <input className="dialog-form__input dialog-form__input_type_edit-avatar" name="inputEditAvatar"
           id="input-edit-avatar" type="url" placeholder="Ссылка на картинку" required />
@@ -56,7 +63,8 @@ function App() {
       }/>
       <PopupWithForm 
         title="Новое место" 
-        name="new-location"         
+        name="new-location" 
+        isOpen = {isNewLocationPopupOpen} 
         children={<>
         <input className="dialog-form__input dialog-form__input_type_new-location-name" name="inputNewLocationName"
           id="input-new-location-name" type="text" placeholder="Название" minlength="2" maxlength="30" required />
