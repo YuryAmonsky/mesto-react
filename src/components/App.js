@@ -2,15 +2,39 @@ import React from 'react';
 import Header from './Header';
 import Main from './Main';
 import PopupWithForm from './PopupWithForm';
+import PopupWithImage from './PopupWithImage';
 import Footer from './Footer';
 
 function App() {
+
+  const handleEditAvatarClick = ()=>{
+    const elementPopupvEditAvatar = document.querySelector('.popup_type_edit-avatar');
+    elementPopupvEditAvatar.classList.add('popup_opened');
+  }
+  
+  const handleEditProfileClick = ()=>{
+    const elementPopupvEditProfile = document.querySelector('.popup_type_edit-profile');
+    elementPopupvEditProfile.classList.add('popup_opened');
+  }
+
+  const handleAddPlaceClick = ()=>{
+    const elementPopupvNewLocation = document.querySelector('.popup_type_new-location');
+    elementPopupvNewLocation.classList.add('popup_opened');
+  }
+
   return (
     <div className="page">
       <Header />
-      <Main />
+      <Main 
+        onEditProfile = {handleEditProfileClick} 
+        onEditAvatar = {handleEditAvatarClick} 
+        onAddPlace = {handleAddPlaceClick} 
+      />
       <Footer />
-      <PopupWithForm title="Редактировать профиль" name="edit-profile" children={<>
+      <PopupWithForm 
+        title="Редактировать профиль" 
+        name="edit-profile"         
+        children={<>
         <input className="dialog-form__input dialog-form__input_type_edit-profile-name" name="inputEditProfileName"
           id="input-edit-profile-name" type="text" placeholder="Имя" minlength="2" maxlength="40" required />
         <span className="dialog-form__input-error input-edit-profile-name-error"></span>
@@ -20,14 +44,20 @@ function App() {
         <button className="dialog-form__submit-button" type="submit" name="submitEditProfile"
           formmethod="post">Сохранить</button></>
       }/>
-      <PopupWithForm title="Обновить аватар" name="edit-avatar" children={<>
+      <PopupWithForm 
+        title="Обновить аватар" 
+        name="edit-avatar"         
+        children={<>
         <input className="dialog-form__input dialog-form__input_type_edit-avatar" name="inputEditAvatar"
           id="input-edit-avatar" type="url" placeholder="Ссылка на картинку" required />
         <span className="dialog-form__input-error input-edit-avatar-error"></span>        
         <button className="dialog-form__submit-button" type="submit" name="submitEditAvatar"
           formmethod="post">Сохранить</button></>
       }/>
-      <PopupWithForm title="Новое место" name="new-location" children={<>
+      <PopupWithForm 
+        title="Новое место" 
+        name="new-location"         
+        children={<>
         <input className="dialog-form__input dialog-form__input_type_new-location-name" name="inputNewLocationName"
           id="input-new-location-name" type="text" placeholder="Название" minlength="2" maxlength="30" required />
         <span className="dialog-form__input-error input-new-location-name-error"></span>
@@ -37,9 +67,13 @@ function App() {
         <button className="dialog-form__submit-button" type="submit" name="submitNewLocation"
           formmethod="post">Создать</button></>
       }/>
-      <PopupWithForm title="Вы уверены?" name="delete-location" children={<>
+      <PopupWithForm 
+        title="Вы уверены?" 
+        name="delete-location" 
+        children={<>
         <button className="dialog-form__submit-button" type="submit" name="submitDeleteLocation">Да</button></>
       }/>
+      <PopupWithImage />
   {/*}    <div className="popup popup_type_edit-profile">
         <div className="popup__container">
           <button className="popup__close-icon" type="button"></button>
@@ -94,13 +128,7 @@ function App() {
           </form>
         </div>
       </div>
-  {*/}<div className="popup popup_type_view-image">
-        <div className="popup__container">
-          <button className="popup__close-icon" type="button"></button>
-          <img className="original-image" src="#" alt="" />
-          <h3 className="image-caption">Подпись к картинке</h3>
-        </div>
-      </div>
+  {*/}
       <template className="location-template">
         <li className="location">
           <button className="location__delete-icon" type="button"></button>
