@@ -26,6 +26,11 @@ function App() {
     setNewLocationPopupState(true);
   }
   
+  const closeAllPopups = ()=>{
+    setEditProfilePopupState(false);
+    setEditAvatarPopupState(false);
+    setNewLocationPopupState(false);
+  }
 
   return (
     <div className="page">
@@ -40,6 +45,7 @@ function App() {
         title="Редактировать профиль" 
         name="edit-profile"
         isOpen = {isEditProfilePopupOpen} 
+        onClose = {closeAllPopups} 
         children={<>
         <input className="dialog-form__input dialog-form__input_type_edit-profile-name" name="inputEditProfileName"
           id="input-edit-profile-name" type="text" placeholder="Имя" minlength="2" maxlength="40" required />
@@ -54,6 +60,7 @@ function App() {
         title="Обновить аватар" 
         name="edit-avatar" 
         isOpen = {isEditAvatarPopupOpen} 
+        onClose = {closeAllPopups} 
         children={<>
         <input className="dialog-form__input dialog-form__input_type_edit-avatar" name="inputEditAvatar"
           id="input-edit-avatar" type="url" placeholder="Ссылка на картинку" required />
@@ -65,6 +72,7 @@ function App() {
         title="Новое место" 
         name="new-location" 
         isOpen = {isNewLocationPopupOpen} 
+        onClose = {closeAllPopups} 
         children={<>
         <input className="dialog-form__input dialog-form__input_type_new-location-name" name="inputNewLocationName"
           id="input-new-location-name" type="text" placeholder="Название" minlength="2" maxlength="30" required />
