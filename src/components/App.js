@@ -9,6 +9,7 @@ function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupState] = React.useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupState] = React.useState(false);
   const [isNewLocationPopupOpen, setNewLocationPopupState] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState(null);
   
   const handleEditProfileClick = ()=>{
     setEditProfilePopupState(true);
@@ -22,10 +23,15 @@ function App() {
     setNewLocationPopupState(true);
   }
   
+  const handleCardClick  = (card) =>{
+    setSelectedCard(card);
+  }
+
   const closeAllPopups = ()=>{
     setEditProfilePopupState(false);
     setEditAvatarPopupState(false);
     setNewLocationPopupState(false);
+    setSelectedCard(null);
   }
 
   return (
@@ -35,6 +41,7 @@ function App() {
         onEditProfile = {handleEditProfileClick} 
         onEditAvatar = {handleEditAvatarClick} 
         onNewLocation = {handleNewLocationClick} 
+        onCardClick = {handleCardClick} 
       />
       <Footer />
       <PopupWithForm 
@@ -85,7 +92,7 @@ function App() {
         children={<>
         <button className="dialog-form__submit-button" type="submit" name="submitDeleteLocation">Да</button></>
       }/>
-      <PopupWithImage />
+      <PopupWithImage card={selectedCard} onClose={closeAllPopups} />
   {/*    <div className="popup popup_type_edit-profile">
         <div className="popup__container">
           <button className="popup__close-icon" type="button"></button>

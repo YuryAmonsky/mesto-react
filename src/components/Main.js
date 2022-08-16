@@ -1,5 +1,6 @@
 import React from 'react';
 import {api} from '../utils/Api';
+import Card from './Card';
 
 function Main(props){
 
@@ -8,6 +9,7 @@ function Main(props){
   const [userAvatar, setUserAvatar] = React.useState('');
   const [cards, setInitialCards] = React.useState([]);
   //const [userInfo, setUserInfoObj] = React.useState('');
+  
   React.useEffect(()=>{
     Promise.all([
       /**загрузка данных пользователя в профиль*/
@@ -43,19 +45,11 @@ function Main(props){
       <section aria-label="locations">
         <ul className="location-list">
           {
-            cards.map((card)=>{
-              return (
-                <li className="location">
-                  <button className="location__delete-icon" type="button"></button>
-                  <img className="location__image" src={card.link} alt="Фотография места"/>
-                  <h2 className="location__name">{card.name}</h2>
-                  <div className="location__like-group">
-                  <button className="location__like" type="button"></button>
-                  <span className="location__likes-number">{card.likes.length}</span>
-                  </div>
-                </li>
-              
-            );})
+            cards.map((card)=>
+              <li key={card._id} className="location">
+                <Card card={card} onCardClick={props.onCardClick}/>
+              </li>                             
+            )
           }          
         </ul>
       </section>
