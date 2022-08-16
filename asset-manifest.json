@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.css": "/git@github.com:YuryAmonsky/mesto-react/static/css/main.a056b599.css",
+    "main.js": "/git@github.com:YuryAmonsky/mesto-react/static/js/main.b8fe126d.js",
+    "static/js/787.5530211c.chunk.js": "/git@github.com:YuryAmonsky/mesto-react/static/js/787.5530211c.chunk.js",
+    "static/media/Inter-Medium.woff": "/git@github.com:YuryAmonsky/mesto-react/static/media/Inter-Medium.9053572c46aeb4b16caa.woff",
+    "static/media/Inter-Black.woff": "/git@github.com:YuryAmonsky/mesto-react/static/media/Inter-Black.c6938660eec019fefd68.woff",
+    "static/media/Inter-Regular.woff": "/git@github.com:YuryAmonsky/mesto-react/static/media/Inter-Regular.8c206db99195777c6769.woff",
+    "static/media/Inter-Medium.woff2": "/git@github.com:YuryAmonsky/mesto-react/static/media/Inter-Medium.293fd13dbca5a3e450ef.woff2",
+    "static/media/Inter-Black.woff2": "/git@github.com:YuryAmonsky/mesto-react/static/media/Inter-Black.15ca31c0a2a68f76d2d1.woff2",
+    "static/media/Inter-Regular.woff2": "/git@github.com:YuryAmonsky/mesto-react/static/media/Inter-Regular.c8ba52b05a9ef10f4758.woff2",
+    "static/media/logo.svg": "/git@github.com:YuryAmonsky/mesto-react/static/media/logo.bbe2a6eafac19c3d031c272c424875ca.svg",
+    "static/media/like.svg": "/git@github.com:YuryAmonsky/mesto-react/static/media/like.1ad06e85f169668a1f36.svg",
+    "index.html": "/git@github.com:YuryAmonsky/mesto-react/index.html",
+    "static/media/Trash.svg": "/git@github.com:YuryAmonsky/mesto-react/static/media/Trash.ce3b64935accf9b8212e.svg",
+    "static/media/like_active.svg": "/git@github.com:YuryAmonsky/mesto-react/static/media/like_active.35948469632d0421d697.svg",
+    "static/media/Close_icon.svg": "/git@github.com:YuryAmonsky/mesto-react/static/media/Close_icon.973e77374abfb705de40.svg",
+    "static/media/Edit.svg": "/git@github.com:YuryAmonsky/mesto-react/static/media/Edit.6c7bf05444b9793fdf6e.svg",
+    "static/media/Edit_large.svg": "/git@github.com:YuryAmonsky/mesto-react/static/media/Edit_large.ae1a976ddb506239e9f0.svg",
+    "static/media/Plus.svg": "/git@github.com:YuryAmonsky/mesto-react/static/media/Plus.bed8c136e13907f5eefb.svg",
+    "main.a056b599.css.map": "/git@github.com:YuryAmonsky/mesto-react/static/css/main.a056b599.css.map",
+    "main.b8fe126d.js.map": "/git@github.com:YuryAmonsky/mesto-react/static/js/main.b8fe126d.js.map",
+    "787.5530211c.chunk.js.map": "/git@github.com:YuryAmonsky/mesto-react/static/js/787.5530211c.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a056b599.css",
+    "static/js/main.b8fe126d.js"
+  ]
+}
