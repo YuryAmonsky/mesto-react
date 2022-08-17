@@ -1,7 +1,6 @@
 {
   "name": "mesto-react",
-  "version": "0.1.0",
-  "homepage": "git@github.com:YuryAmonsky/mesto-react",
+  "version": "0.1.0",  
   "private": false,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
@@ -12,13 +11,13 @@
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
-  "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+  "scripts": {    
     "start": "react-scripts start",
     "build": "react-scripts build",    
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
