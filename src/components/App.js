@@ -2,13 +2,13 @@ import React from 'react';
 import Header from './Header';
 import Main from './Main';
 import PopupWithForm from './PopupWithForm';
-import PopupWithImage from './PopupWithImage';
+import ImagePopup from './ImagePopup';
 import Footer from './Footer';
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupState] = React.useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupState] = React.useState(false);
-  const [isNewLocationPopupOpen, setNewLocationPopupState] = React.useState(false);
+  const [isAddPlacePopupOpen, setAddPlacePopupState] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState(null);
   
   const handleEditProfileClick = ()=>{
@@ -19,8 +19,8 @@ function App() {
     setEditAvatarPopupState(true);
   }
 
-  const handleNewLocationClick = ()=>{
-    setNewLocationPopupState(true);
+  const handleAddPlaceClick = ()=>{
+    setAddPlacePopupState(true);
   }
   
   const handleCardClick  = (card) =>{
@@ -30,7 +30,7 @@ function App() {
   const closeAllPopups = ()=>{
     setEditProfilePopupState(false);
     setEditAvatarPopupState(false);
-    setNewLocationPopupState(false);
+    setAddPlacePopupState(false);
     setSelectedCard(null);
   }
 
@@ -40,7 +40,7 @@ function App() {
       <Main 
         onEditProfile = {handleEditProfileClick} 
         onEditAvatar = {handleEditAvatarClick} 
-        onNewLocation = {handleNewLocationClick} 
+        onNewLocation = {handleAddPlaceClick} 
         onCardClick = {handleCardClick} 
       />
       <Footer />
@@ -74,7 +74,7 @@ function App() {
       <PopupWithForm 
         title="Новое место" 
         name="new-location" 
-        isOpen = {isNewLocationPopupOpen} 
+        isOpen = {isAddPlacePopupOpen} 
         onClose = {closeAllPopups} 
         children={<>
         <input className="dialog-form__input dialog-form__input_type_new-location-name" name="inputNewLocationName"
@@ -92,7 +92,7 @@ function App() {
         children={<>
         <button className="dialog-form__submit-button" type="submit" name="submitDeleteLocation">Да</button></>
       }/>
-      <PopupWithImage card={selectedCard} onClose={closeAllPopups} />
+      <ImagePopup card={selectedCard} onClose={closeAllPopups} />
   {/*    <div className="popup popup_type_edit-profile">
         <div className="popup__container">
           <button className="popup__close-icon" type="button"></button>
