@@ -5,7 +5,7 @@
 Приложение создавалось на основе CRA (Create React APP).
 При портировании в react app использовались функциональные компоненты с хуками состояния и эффектов.
 
-## Ссылка на демо
+## Ссылка на демо-страницу
 - [https://yuryamonsky.github.io/mesto-react/](https://yuryamonsky.github.io/mesto-react/)
 
 
