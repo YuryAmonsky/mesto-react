@@ -7,7 +7,7 @@ function Main(props){
   const [userName, setUserName] = React.useState('');
   const [userDescription, setUserDescription] = React.useState('');
   const [userAvatar, setUserAvatar] = React.useState('');
-  const [cards, setInitialCards] = React.useState([]);
+  const [cards, setCards] = React.useState([]);
   //const [userInfo, setUserInfoObj] = React.useState('');
   
   React.useEffect(()=>{
@@ -21,7 +21,7 @@ function Main(props){
           setUserName(values[0].name);
           setUserDescription(values[0].about);
           setUserAvatar(values[0].avatar);          
-          setInitialCards([...values[1]]); 
+          setCards([...values[1]]); 
         })
         .catch((err) =>{
           console.log(err.status);

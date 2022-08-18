@@ -6,21 +6,21 @@ import ImagePopup from './ImagePopup';
 import Footer from './Footer';
 
 function App() {
-  const [isEditProfilePopupOpen, setEditProfilePopupState] = React.useState(false);
-  const [isEditAvatarPopupOpen, setEditAvatarPopupState] = React.useState(false);
-  const [isAddPlacePopupOpen, setAddPlacePopupState] = React.useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState(null);
   
   const handleEditProfileClick = ()=>{
-    setEditProfilePopupState(true);
+    setIsEditProfilePopupOpen(true);
   }
 
   const handleEditAvatarClick = ()=>{
-    setEditAvatarPopupState(true);
+    setIsEditAvatarPopupOpen(true);
   }
 
   const handleAddPlaceClick = ()=>{
-    setAddPlacePopupState(true);
+    setIsAddPlacePopupOpen(true);
   }
   
   const handleCardClick  = (card) =>{
@@ -28,9 +28,9 @@ function App() {
   }
 
   const closeAllPopups = ()=>{
-    setEditProfilePopupState(false);
-    setEditAvatarPopupState(false);
-    setAddPlacePopupState(false);
+    setIsEditProfilePopupOpen(false);
+    setIsEditAvatarPopupOpen(false);
+    setIsAddPlacePopupOpen(false);
     setSelectedCard(null);
   }
 
