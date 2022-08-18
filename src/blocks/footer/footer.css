@@ -8,7 +8,8 @@
 
 @media screen and (max-width: 917px) {
   .footer {
-    margin: calc(48px + 19 * (100vw - 320px) / 597) 19px calc(36px + 24 * (100vw - 320px) / 597);
+    margin: calc(48px + 19 * (100vw - 320px) / 597) 19px 0;
+    padding-bottom: calc(36px + 24 * (100vw - 320px) / 597);
     width: calc(100vw - 38px);
   }
 }

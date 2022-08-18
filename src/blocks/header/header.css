@@ -10,6 +10,6 @@
 
 @media screen and (max-width: 880px) {
   .header {
-    margin-top: calc(28px + 17 * (100vw - 320px) / 560);
+    padding-top: calc(28px + 17 * (100vw - 320px) / 560);
   }
 }
