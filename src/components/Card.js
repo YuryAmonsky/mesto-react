@@ -1,17 +1,17 @@
 import React from 'react';
 
-function Card(props){
+function Card({card, onCardClick}){
   const handleClick = ()=>{
-    props.onCardClick(props.card);
+    onCardClick(card);
   }
   return (   
     <li className="location">
       <button className="location__delete-icon" type="button"></button>
-      <img className="location__image" src={props.card.link} alt={`Фотография места ${props.card.name}`} onClick={handleClick}/>
-      <h2 className="location__name">{props.card.name}</h2>
+      <img className="location__image" src={card.link} alt={`Фотография места ${card.name}`} onClick={handleClick}/>
+      <h2 className="location__name">{card.name}</h2>
       <div className="location__like-group">
         <button className="location__like" type="button"></button>
-        <span className="location__likes-number">{props.card.likes.length}</span>
+        <span className="location__likes-number">{card.likes.length}</span>
       </div>
     </li>
   );
