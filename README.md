@@ -6,7 +6,7 @@
 При портировании в react app использовались функциональные компоненты с хуками состояния и эффектов.
 
 ## Ссылка на демо
-[tps://yuryamonsky.github.io/mesto-react/](https://yuryamonsky.github.io/mesto-react/)
+- [https://yuryamonsky.github.io/mesto-react/](https://yuryamonsky.github.io/mesto-react/)
 
 
 
