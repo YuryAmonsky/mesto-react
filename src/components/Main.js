@@ -46,9 +46,7 @@ function Main(props) {
         <ul className="location-list">
           {
             cards.map((card) =>
-              <li key={card._id} className="location">
-                <Card card={card} onCardClick={props.onCardClick} />
-              </li>
+              <Card key={card._id} card={card} onCardClick={props.onCardClick} />
             )
           }
         </ul>
