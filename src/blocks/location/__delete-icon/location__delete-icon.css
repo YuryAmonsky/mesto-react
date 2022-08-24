@@ -10,8 +10,7 @@
   background-size: 100%;
   background-color: #00000000;
   cursor: pointer;
-  transition: .3s;
-  visibility: hidden;
+  transition: .3s;  
 }
 
 .location__delete-icon:hover {
