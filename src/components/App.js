@@ -2,6 +2,7 @@ import React from 'react';
 import Header from './Header';
 import Main from './Main';
 import PopupWithForm from './PopupWithForm';
+import EditProfilePopup from './EditProfilePopup';
 import ImagePopup from './ImagePopup';
 import Footer from './Footer';
 import { api } from '../utils/Api';
@@ -23,10 +24,10 @@ function App() {
   React.useEffect(()=>{
     api.getUserInfo()
       .then(res=>{
-        setCurrentUser({...res})
+        setCurrentUser(res)
       }).catch(err=>{
         console.log(err.status);
-        alert(`Ошибка загрузки данных:\n ${err.status}\n ${err.text}`);
+        alert(`Ошибка загрузки данных пользователя:\n ${err.status}\n ${err.text}`);
       });
     
   },[]);
@@ -47,6 +48,18 @@ function App() {
     setSelectedCard(card);
   }
 
+  const handleUpdateUser = (objUserInfo)=>{
+    api.setUserInfo(objUserInfo)
+    .then(updatedUser=>{
+      setCurrentUser(updatedUser);
+      closeAllPopups();
+    })
+    .catch(err=>{
+      console.log(err.status);
+      alert(`Ошибка обновления данных пользователя:\n ${err.status}\n ${err.text}`)
+    });
+  }
+
   const closeAllPopups = ()=>{
     setIsEditProfilePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
@@ -65,20 +78,7 @@ function App() {
           onCardClick = {handleCardClick} 
         />
         <Footer />
-        <PopupWithForm 
-          title="Редактировать профиль" 
-          name="edit-profile"
-          isOpen = {isEditProfilePopupOpen} 
-          onClose = {closeAllPopups}
-          buttonText = "Сохранить"
-        >
-          <input className="dialog-form__input dialog-form__input_type_edit-profile-name" name="inputEditProfileName"
-            id="input-edit-profile-name" type="text" placeholder="Имя" minLength="2" maxLength="40" required />
-          <span className="dialog-form__input-error input-edit-profile-name-error"></span>
-          <input className="dialog-form__input dialog-form__input_type_edit-profile-about-me" name="inputEditProfileAboutMe"
-            id="input-edit-profile-about-me" type="text" placeholder="О себе" minLength="2" maxLength="200" required />
-          <span className="dialog-form__input-error input-edit-profile-about-me-error"></span>        
-        </PopupWithForm>
+        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
         <PopupWithForm 
           title="Обновить аватар" 
           name="edit-avatar" 
