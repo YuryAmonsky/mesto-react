@@ -1,44 +1,10 @@
 import React from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import { api } from '../utils/Api';
 import Card from './Card';
 
-function Main({onEditProfile, onEditAvatar, onNewLocation, onCardClick}) {
- 
-  const [cards, setCards] = React.useState([]);
-  
+function Main({cards, onEditProfile, onEditAvatar, onNewLocation, onCardClick, onCardLike, onCardDelete}) {
+   
   const currentUser = React.useContext(CurrentUserContext);
-
-  const handleCardLike = (card)=>{
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
-    api.changeLikeCardStatus(card._id, !isLiked)
-      .then((newCard)=>{
-        setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-      })
-      .catch(err=>{
-        console.log(err.status);
-        alert(`Ошибка загрузки данных карточки:\n ${err.status}\n ${err.text}`);
-      });
-  }
-
-  const handleCardDelete = (card)=>{
-    api.deleteLocation(card._id)
-    .then(res=>{
-      setCards((state) => state.filter((c) => c._id !== card._id));
-    })
-  }
-  
-  React.useEffect(() => {   
-      /*загрузка списка карточек*/
-      api.loadLocations()    
-      .then((res) => {        
-        setCards([...res]);
-      })
-      .catch((err) => {
-        console.log(err.status);
-        alert(`Ошибка загрузки списка карточек:\n ${err.status}\n ${err.text}`);
-      });
-  }, []);
 
   return (
     <main className="content">
@@ -57,7 +23,7 @@ function Main({onEditProfile, onEditAvatar, onNewLocation, onCardClick}) {
         <ul className="location-list">
           {
             cards.map((card) =>
-              <Card key={card._id} card={card} onCardClick={onCardClick} onCardLike={handleCardLike} onCardDelete={handleCardDelete}/>
+              <Card key={card._id} card={card} onCardClick={onCardClick} onCardLike={onCardLike} onCardDelete={onCardDelete}/>
             )
           }
         </ul>
