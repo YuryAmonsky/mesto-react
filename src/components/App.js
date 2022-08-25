@@ -3,6 +3,7 @@ import Header from './Header';
 import Main from './Main';
 import PopupWithForm from './PopupWithForm';
 import EditProfilePopup from './EditProfilePopup';
+import EditAvatarPopup from './EditAvatarPopup';
 import ImagePopup from './ImagePopup';
 import Footer from './Footer';
 import { api } from '../utils/Api';
@@ -59,6 +60,17 @@ function App() {
       alert(`Ошибка обновления данных пользователя:\n ${err.status}\n ${err.text}`)
     });
   }
+  const handleUpdateAvatar = (link)=>{
+    api.setAvatar(link)
+    .then(updatedUser=>{
+      setCurrentUser(updatedUser);
+      closeAllPopups();
+    })
+    .catch(err=>{
+      console.log(err.status);
+      alert(`Ошибка обновления аватара пользователя:\n ${err.status}\n ${err.text}`)
+    });
+  }
 
   const closeAllPopups = ()=>{
     setIsEditProfilePopupOpen(false);
@@ -79,17 +91,7 @@ function App() {
         />
         <Footer />
         <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
-        <PopupWithForm 
-          title="Обновить аватар" 
-          name="edit-avatar" 
-          isOpen = {isEditAvatarPopupOpen} 
-          onClose = {closeAllPopups}
-          buttonText = "Сохранить"
-        >         
-          <input className="dialog-form__input dialog-form__input_type_edit-avatar" name="inputEditAvatar"
-            id="input-edit-avatar" type="url" placeholder="Ссылка на картинку" required />
-          <span className="dialog-form__input-error input-edit-avatar-error"></span>                  
-        </PopupWithForm>
+        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} /> 
         <PopupWithForm 
           title="Новое место" 
           name="new-location" 
