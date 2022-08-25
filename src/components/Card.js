@@ -1,19 +1,23 @@
 import React from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-function Card({card, onCardClick, onCardLike}){
+function Card({card, onCardClick, onCardLike, onCardDelete}){
   const handleClick = ()=>{
     onCardClick(card);
   }
   const handleLikeClick = ()=>{
     onCardLike(card);
   }
+  const handleDeleteClick = ()=>{
+    onCardDelete(card);
+  }
+
   const currentUser = React.useContext(CurrentUserContext);
   const isOwn = card.owner._id === currentUser._id;
   const isLiked = card.likes.some(i => i._id === currentUser._id);
   return (   
     <li className="location">
-      {isOwn && <button className="location__delete-icon" type="button"></button>}
+      {isOwn && <button className="location__delete-icon" type="button" onClick={handleDeleteClick}></button>}
       <img className="location__image" src={card.link} alt={`Фотография места ${card.name}`} onClick={handleClick}/>
       <h2 className="location__name">{card.name}</h2>
       <div className="location__like-group">

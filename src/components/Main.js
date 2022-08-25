@@ -17,8 +17,15 @@ function Main({onEditProfile, onEditAvatar, onNewLocation, onCardClick}) {
       })
       .catch(err=>{
         console.log(err.status);
-        alert(`Ошибка загрузки данных:\n ${err.status}\n ${err.text}`);
+        alert(`Ошибка загрузки данных карточки:\n ${err.status}\n ${err.text}`);
       });
+  }
+
+  const handleCardDelete = (card)=>{
+    api.deleteLocation(card._id)
+    .then(res=>{
+      setCards((state) => state.filter((c) => c._id !== card._id));
+    })
   }
   
   React.useEffect(() => {   
@@ -29,7 +36,7 @@ function Main({onEditProfile, onEditAvatar, onNewLocation, onCardClick}) {
       })
       .catch((err) => {
         console.log(err.status);
-        alert(`Ошибка загрузки данных:\n ${err.status}\n ${err.text}`);
+        alert(`Ошибка загрузки списка карточек:\n ${err.status}\n ${err.text}`);
       });
   }, []);
 
@@ -50,7 +57,7 @@ function Main({onEditProfile, onEditAvatar, onNewLocation, onCardClick}) {
         <ul className="location-list">
           {
             cards.map((card) =>
-              <Card key={card._id} card={card} onCardClick={onCardClick} onCardLike={handleCardLike}/>
+              <Card key={card._id} card={card} onCardClick={onCardClick} onCardLike={handleCardLike} onCardDelete={handleCardDelete}/>
             )
           }
         </ul>
