@@ -8,6 +8,18 @@ function Main({onEditProfile, onEditAvatar, onNewLocation, onCardClick}) {
   const [cards, setCards] = React.useState([]);
   
   const currentUser = React.useContext(CurrentUserContext);
+
+  const handleCardLike = (card)=>{
+    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    api.changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard)=>{
+        setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+      })
+      .catch(err=>{
+        console.log(err.status);
+        alert(`Ошибка загрузки данных:\n ${err.status}\n ${err.text}`);
+      });
+  }
   
   React.useEffect(() => {   
       /*загрузка списка карточек*/
@@ -38,7 +50,7 @@ function Main({onEditProfile, onEditAvatar, onNewLocation, onCardClick}) {
         <ul className="location-list">
           {
             cards.map((card) =>
-              <Card key={card._id} card={card} onCardClick={onCardClick} />
+              <Card key={card._id} card={card} onCardClick={onCardClick} onCardLike={handleCardLike}/>
             )
           }
         </ul>

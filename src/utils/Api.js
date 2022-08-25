@@ -76,6 +76,14 @@
     })
     .then(this._checkServerResponse);
   }
+
+  changeLikeCardStatus(cardId, isLiked){
+    if (isLiked){
+      return this.setLike(cardId);
+    }else{
+      return this.deleteLike(cardId);
+    }
+  }
 }
 
 export const api = new Api({
