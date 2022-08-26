@@ -2,8 +2,8 @@ import React from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import Card from './Card';
 
-function Main({cards, onEditProfile, onEditAvatar, onNewLocation, onCardClick, onCardLike, onCardDelete}) {
-   
+function Main({ cards, onEditProfile, onEditAvatar, onNewLocation, onCardClick, onCardLike, onCardDelete }) {
+
   const currentUser = React.useContext(CurrentUserContext);
 
   return (
@@ -23,7 +23,7 @@ function Main({cards, onEditProfile, onEditAvatar, onNewLocation, onCardClick, o
         <ul className="location-list">
           {
             cards.map((card) =>
-              <Card key={card._id} card={card} onCardClick={onCardClick} onCardLike={onCardLike} onCardDelete={onCardDelete}/>
+              <Card key={card._id} card={card} onCardClick={onCardClick} onCardLike={onCardLike} onCardDelete={onCardDelete} />
             )
           }
         </ul>
