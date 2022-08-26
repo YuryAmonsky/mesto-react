@@ -64,6 +64,13 @@ function App() {
     setSelectedCard(null);
   }
 
+  /*обработчик закрытия попапа по нажатию на фон*/
+  const handlePopupBGClick = (evt)=>{  
+    if(evt.target.classList.contains('popup__container')){
+      closeAllPopups();
+    }
+  }
+
   const handleUpdateUser = (objUserInfo) => {
     api.setUserInfo(objUserInfo)
       .then(updatedUser => {
@@ -136,15 +143,15 @@ function App() {
           onCardDelete={handleCardDelete}
         />
         <Footer />
-        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
-        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
-        <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlace} />
+        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onBGClick={handlePopupBGClick} onUpdateUser={handleUpdateUser} />
+        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onBGClick={handlePopupBGClick} onUpdateAvatar={handleUpdateAvatar} />
+        <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onBGClick={handlePopupBGClick} onAddPlace={handleAddPlace} />
         <PopupWithForm
           title="Вы уверены?"
           name="delete-location"
           buttonText="Да"
         />
-        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+        <ImagePopup card={selectedCard} onClose={closeAllPopups} onBGClick={handlePopupBGClick}/>
       </div>
     </CurrentUserContext.Provider>
   );
