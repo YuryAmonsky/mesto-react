@@ -4,7 +4,7 @@ function PopupWithForm({title, name, isOpen, onClose, onSubmit, onBGClick, butto
     <div className={isOpen ? `popup popup_type_${name} popup_opened`: `popup popup_type_${name}`}>
       <div className="popup__container" onClick={onBGClick}>
         <button className="popup__close-icon" type="button" onClick={onClose}></button>
-        <form className={`dialog-form dialog-form_type_${name}`} name={name} onSubmit={onSubmit}>
+        <form className={`dialog-form dialog-form_type_${name}`} name={name} onSubmit={onSubmit} noValidate>
           <h2 className="dialog-form__title">{title}</h2>
           {children}
           <button className="dialog-form__submit-button" type="submit" name="submitButton"

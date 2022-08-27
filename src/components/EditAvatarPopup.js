@@ -1,7 +1,7 @@
 import React from "react";
 import PopupWithForm from './PopupWithForm';
 
-function EditAvatarPopup({ isOpen, onClose, onBGClick, onUpdateAvatar, buttonText}) {
+function EditAvatarPopup({onUpdateAvatar, ...commonProps}) {
   const avatarLink = React.useRef();
 
   const handleSubmit = (evt) => {
@@ -13,11 +13,8 @@ function EditAvatarPopup({ isOpen, onClose, onBGClick, onUpdateAvatar, buttonTex
     <PopupWithForm
       title="Обновить аватар"
       name="edit-avatar"
-      isOpen={isOpen}
-      onClose={onClose}
-      onBGClick={onBGClick}
-      onSubmit={handleSubmit}
-      buttonText={buttonText}
+      onSubmit={handleSubmit} 
+      {...commonProps}
     >
       <input ref={avatarLink} className="dialog-form__input dialog-form__input_type_edit-avatar" name="inputEditAvatar"
         id="input-edit-avatar" type="url" placeholder="Ссылка на картинку" required />

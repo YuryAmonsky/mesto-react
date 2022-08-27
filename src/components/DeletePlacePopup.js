@@ -1,7 +1,7 @@
 import React from "react";
 import PopupWithForm from './PopupWithForm';
 
-function DeletePlacePopup({isOpen, onClose, onBGClick, card, onCardDelete, buttonText}){
+function DeletePlacePopup({card, onCardDelete, ...commonProps}){
   const handleSubmit = (evt)=>{
     evt.preventDefault();
     onCardDelete(card);
@@ -10,11 +10,8 @@ function DeletePlacePopup({isOpen, onClose, onBGClick, card, onCardDelete, butto
     <PopupWithForm
       title="Вы уверены?"
       name="delete-location"
-      isOpen={isOpen}
-      onClose={onClose}
-      onBGClick={onBGClick}
-      onSubmit={handleSubmit}
-      buttonText={buttonText}
+      onSubmit={handleSubmit} 
+      {...commonProps}
     />
   );
 }
