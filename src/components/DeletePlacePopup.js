@@ -1,7 +1,7 @@
 import React from "react";
 import PopupWithForm from './PopupWithForm';
 
-function DeletePlacePopup({isOpen, onClose, onBGClick, card, onCardDelete}){
+function DeletePlacePopup({isOpen, onClose, onBGClick, card, onCardDelete, buttonText}){
   const handleSubmit = (evt)=>{
     evt.preventDefault();
     onCardDelete(card);
@@ -14,7 +14,7 @@ function DeletePlacePopup({isOpen, onClose, onBGClick, card, onCardDelete}){
       onClose={onClose}
       onBGClick={onBGClick}
       onSubmit={handleSubmit}
-      buttonText="Да"
+      buttonText={buttonText}
     />
   );
 }

@@ -2,7 +2,7 @@ import React from "react";
 import PopupWithForm from './PopupWithForm';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-function EditProfilePopup({ isOpen, onClose, onBGClick, onUpdateUser }) {
+function EditProfilePopup({ isOpen, onClose, onBGClick, onUpdateUser, buttonText}) {
   const currentUser = React.useContext(CurrentUserContext);
   const [name, setName] = React.useState('');
   const [description, setDescription] = React.useState('');
@@ -35,7 +35,7 @@ function EditProfilePopup({ isOpen, onClose, onBGClick, onUpdateUser }) {
       onClose={onClose}
       onBGClick={onBGClick}
       onSubmit={handleSubmit}
-      buttonText="Сохранить"
+      buttonText={buttonText}
     >
       <input className="dialog-form__input dialog-form__input_type_edit-profile-name" name="inputEditProfileName"
         id="input-edit-profile-name" type="text" placeholder="Имя" value={name} minLength="2" maxLength="40" required

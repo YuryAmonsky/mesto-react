@@ -1,7 +1,7 @@
 import React from "react";
 import PopupWithForm from './PopupWithForm';
 
-function AddPlacePopup({ isOpen, onClose, onBGClick, onAddPlace }) {  
+function AddPlacePopup({ isOpen, onClose, onBGClick, onAddPlace, buttonText}) {  
   const [name, setName] = React.useState('');
   const [link, setLink] = React.useState('');
   const handleNameChange = (evt) => {
@@ -32,7 +32,7 @@ function AddPlacePopup({ isOpen, onClose, onBGClick, onAddPlace }) {
       onClose={onClose}
       onBGClick={onBGClick}
       onSubmit={handleAddPlaceSubmit}
-      buttonText="Создать"
+      buttonText={buttonText}
     >
       <input className="dialog-form__input dialog-form__input_type_new-location-name" name="inputNewLocationName"
         id="input-new-location-name" type="text" placeholder="Название" value={name} minLength="2" maxLength="30" required onChange={handleNameChange} />
