@@ -32,7 +32,7 @@ function App() {
   /**стейт переменные для изменения текста кнопок форм во время выполнения api-запросов */
   const [buttonEditProfie, setButtonEditProfie] = React.useState({ text: 'Сохранить', disabled: false });
   const [buttonEditAvatar, setButtonEditAvatar] = React.useState({ text: 'Сохранить', disabled: false });
-  const [buttonAddPlace, setButtonAddPlace] = React.useState({ text: 'Создать', disabled: false });
+  const [buttonAddPlace, setButtonAddPlace] = React.useState({ text: 'Создать', disabled: true });
   const [buttonDeletePlace, setButtonDeletePlace] = React.useState({ text: 'Да', disabled: false });
 
 
@@ -128,7 +128,7 @@ function App() {
         alert(`Ошибка добавления карточки:\n ${err.status}\n ${err.text}`);
       })
       .finally(() => {
-        setButtonAddPlace({ text: 'Создать', disabled: false });
+        setButtonAddPlace({ text: 'Создать', disabled: true });
       });
   }
 
