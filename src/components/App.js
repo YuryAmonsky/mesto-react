@@ -26,18 +26,19 @@ function App() {
    * добавляю стейт для открытия попапа подтверждения удаления
    * и передачи в него объекта карточки */
   const [deletePlaceConfirm, setDeletePlaceConfirm] = React.useState({
-    isOpen:false, card:{}});
+    isOpen: false, card: {}
+  });
   const [selectedCard, setSelectedCard] = React.useState(null);
   /**стейт переменные для изменения текста кнопок форм во время выполнения api-запросов */
-  const [buttonTextEditProfie, setButtonTextEditProfie] = React.useState('Сохранить');
-  const [buttonTextEditAvatar, setButtonTextEditAvatar] = React.useState('Сохранить');
-  const [buttonTextAddPlace, setButtonTextAddPlace] = React.useState('Создать');
-  const [buttonTextDeletePlace, setButtonTextDeletePlace] = React.useState('Да');
+  const [buttonEditProfie, setButtonEditProfie] = React.useState({ text: 'Сохранить', disabled: false });
+  const [buttonEditAvatar, setButtonEditAvatar] = React.useState({ text: 'Сохранить', disabled: false });
+  const [buttonAddPlace, setButtonAddPlace] = React.useState({ text: 'Создать', disabled: false });
+  const [buttonDeletePlace, setButtonDeletePlace] = React.useState({ text: 'Да', disabled: false });
 
 
   React.useEffect(() => {
-    Promise.all([      
-      api.getUserInfo(),      
+    Promise.all([
+      api.getUserInfo(),
       api.loadLocations()
     ])
       .then((values) => {
@@ -65,42 +66,42 @@ function App() {
     setSelectedCard(card);
   }
 
-  const handleDeleteClick = (card) => {     
-    setDeletePlaceConfirm({isOpen:true, card:card});
+  const handleDeleteClick = (card) => {
+    setDeletePlaceConfirm({ isOpen: true, card: card });
   }
 
   const closeAllPopups = () => {
     setIsEditProfilePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setIsAddPlacePopupOpen(false);
-    setDeletePlaceConfirm({isOpen:false, card:{}});
+    setDeletePlaceConfirm({ isOpen: false, card: {} });
     setSelectedCard(null);
   }
 
   /*обработчик закрытия попапа по нажатию на фон*/
-  const handlePopupBGClick = (evt)=>{  
-    if(evt.target.classList.contains('popup__container')){
+  const handlePopupBGClick = (evt) => {
+    if (evt.target.classList.contains('popup__container')) {
       closeAllPopups();
     }
   }
 
   const handleUpdateUser = (objUserInfo) => {
-    setButtonTextEditProfie('Сохранение');
+    setButtonEditProfie({ text: 'Сохранение', disabled: true });
     api.setUserInfo(objUserInfo)
       .then(updatedUser => {
-        setCurrentUser(updatedUser);
+        setCurrentUser(updatedUser);        
         closeAllPopups();
       })
       .catch(err => {
         console.log(err.status);
         alert(`Ошибка обновления данных пользователя:\n ${err.status}\n ${err.text}`)
       })
-      .finally(()=>{
-        setButtonTextEditProfie('Сохранить');
+      .finally(() => {
+        setButtonEditProfie({ text: 'Сохранить', disabled: false });
       });
   }
   const handleUpdateAvatar = (link) => {
-    setButtonTextEditAvatar('Загрузка');
+    setButtonEditAvatar({ text: 'Загрузка', disabled: true });
     api.setAvatar(link)
       .then(updatedUser => {
         setCurrentUser(updatedUser);
@@ -110,13 +111,13 @@ function App() {
         console.log(err.status);
         alert(`Ошибка обновления аватара пользователя:\n ${err.status}\n ${err.text}`)
       })
-      .finally(()=>{
-        setButtonTextEditAvatar('Сохранить');
+      .finally(() => {
+        setButtonEditAvatar({ text: 'Сохранить', disabled: false });
       });
   }
 
   const handleAddPlace = (objNewCard) => {
-    setButtonTextAddPlace('Добавление');
+    setButtonAddPlace({ text: 'Добавление', disabled: true });
     api.addNewLocation(objNewCard)
       .then(newCard => {
         setCards([newCard, ...cards]);
@@ -126,13 +127,13 @@ function App() {
         console.log(err.status);
         alert(`Ошибка добавления карточки:\n ${err.status}\n ${err.text}`);
       })
-      .finally(()=>{
-        setButtonTextAddPlace('Создать');
+      .finally(() => {
+        setButtonAddPlace({ text: 'Создать', disabled: false });
       });
   }
 
   const handleCardDelete = (card) => {
-    setButtonTextDeletePlace('Удаление');
+    setButtonDeletePlace({ text: 'Удаление', disabled: true });
     api.deleteLocation(card._id)
       .then(res => {
         console.log(res);
@@ -143,8 +144,8 @@ function App() {
         console.log(err.status);
         alert(`Ошибка удаления карточки:\n ${err.status}\n ${err.text}`);
       })
-      .finally(()=>{
-        setButtonTextDeletePlace('Да');
+      .finally(() => {
+        setButtonDeletePlace({ text: 'Да', disabled: false });
       });
   }
 
@@ -152,7 +153,7 @@ function App() {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
     api.changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
-        setCards((state) => state.map((c) => c._id === card._id ? newCard : c));        
+        setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
       })
       .catch(err => {
         console.log(err.status);
@@ -174,15 +175,15 @@ function App() {
           onDeleteClick={handleDeleteClick}
         />
         <Footer />
-        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onBGClick={handlePopupBGClick} 
-          onUpdateUser={handleUpdateUser} buttonText={buttonTextEditProfie}/>
-        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onBGClick={handlePopupBGClick} 
-          onUpdateAvatar={handleUpdateAvatar} buttonText={buttonTextEditAvatar}/>
-        <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onBGClick={handlePopupBGClick} 
-          onAddPlace={handleAddPlace} buttonText={buttonTextAddPlace}/>        
+        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onBGClick={handlePopupBGClick}
+          onUpdateUser={handleUpdateUser} buttonState={buttonEditProfie} />
+        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onBGClick={handlePopupBGClick}
+          onUpdateAvatar={handleUpdateAvatar} buttonState={buttonEditAvatar} />
+        <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onBGClick={handlePopupBGClick}
+          onAddPlace={handleAddPlace} buttonState={buttonAddPlace} />
         <DeletePlacePopup isOpen={deletePlaceConfirm.isOpen} onClose={closeAllPopups} onBGClick={handlePopupBGClick}
-          card={deletePlaceConfirm.card} onCardDelete={handleCardDelete} buttonText={buttonTextDeletePlace}/>
-        <ImagePopup card={selectedCard} onClose={closeAllPopups} onBGClick={handlePopupBGClick}/>
+          card={deletePlaceConfirm.card} onCardDelete={handleCardDelete} buttonState={buttonDeletePlace} />
+        <ImagePopup card={selectedCard} onClose={closeAllPopups} onBGClick={handlePopupBGClick} />
       </div>
     </CurrentUserContext.Provider>
   );

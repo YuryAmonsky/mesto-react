@@ -1,5 +1,5 @@
 import React from 'react';
-function PopupWithForm({title, name, isOpen, onClose, onSubmit, onBGClick, buttonText, children}){
+function PopupWithForm({title, name, isOpen, onClose, onSubmit, onBGClick, buttonState, children}){
   return(    
     <div className={isOpen ? `popup popup_type_${name} popup_opened`: `popup popup_type_${name}`}>
       <div className="popup__container" onClick={onBGClick}>
@@ -8,7 +8,7 @@ function PopupWithForm({title, name, isOpen, onClose, onSubmit, onBGClick, butto
           <h2 className="dialog-form__title">{title}</h2>
           {children}
           <button className="dialog-form__submit-button" type="submit" name="submitButton"
-           formMethod="post">{buttonText}</button>
+           formMethod="post" disabled={buttonState.disabled}>{buttonState.text}</button>
         </form>
       </div>
     </div>
