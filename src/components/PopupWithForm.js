@@ -1,7 +1,6 @@
 import React from 'react';
 function PopupWithForm({title, name, isOpen, onClose, onSubmit, onBGClick, buttonText, children}){
-  
-  return(
+  return(    
     <div className={isOpen ? `popup popup_type_${name} popup_opened`: `popup popup_type_${name}`}>
       <div className="popup__container" onClick={onBGClick}>
         <button className="popup__close-icon" type="button" onClick={onClose}></button>

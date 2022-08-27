@@ -1,10 +1,11 @@
 import React from 'react';
 import Header from './Header';
 import Main from './Main';
-import PopupWithForm from './PopupWithForm';
+//import PopupWithForm from './PopupWithForm';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
+import DeletePlacePopup from './DeletePlacePopup';
 import ImagePopup from './ImagePopup';
 import Footer from './Footer';
 import { api } from '../utils/Api';
@@ -22,6 +23,11 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+  /** удаление карточки происходит после подтверждения.
+   * добавляю стейт для открытия попапа подтверждения удаления
+   * и передачи в него объекта карточки */
+  const [deletePlaceConfirm, setDeletePlaceConfirm] = React.useState({
+    isOpen:false, card:{}});
   const [selectedCard, setSelectedCard] = React.useState(null);
 
 
@@ -57,10 +63,15 @@ function App() {
     setSelectedCard(card);
   }
 
+  const handleDeleteClick = (card) => {     
+    setDeletePlaceConfirm({isOpen:true, card:card});
+  }
+
   const closeAllPopups = () => {
     setIsEditProfilePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setIsAddPlacePopupOpen(false);
+    setDeletePlaceConfirm({isOpen:false, card:{}});
     setSelectedCard(null);
   }
 
@@ -98,14 +109,14 @@ function App() {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
     api.changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
-        setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+        setCards((state) => state.map((c) => c._id === card._id ? newCard : c));        
       })
       .catch(err => {
         console.log(err.status);
         alert(`Ошибка загрузки данных карточки:\n ${err.status}\n ${err.text}`);
       });
   }
-
+  
   const handleAddPlace = (objNewCard) => {
     api.addNewLocation(objNewCard)
       .then(newCard => {
@@ -121,14 +132,15 @@ function App() {
   const handleCardDelete = (card) => {
     api.deleteLocation(card._id)
       .then(res => {
+        console.log(res);
         setCards((state) => state.filter((c) => c._id !== card._id));
+        closeAllPopups();
       })
       .catch(err => {
         console.log(err.status);
         alert(`Ошибка удаления карточки:\n ${err.status}\n ${err.text}`);
       });
   }
-
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -140,17 +152,14 @@ function App() {
           onNewLocation={handleAddPlaceClick}
           onCardClick={handleCardClick}
           onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
+          onDeleteClick={handleDeleteClick}
         />
         <Footer />
         <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onBGClick={handlePopupBGClick} onUpdateUser={handleUpdateUser} />
         <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onBGClick={handlePopupBGClick} onUpdateAvatar={handleUpdateAvatar} />
-        <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onBGClick={handlePopupBGClick} onAddPlace={handleAddPlace} />
-        <PopupWithForm
-          title="Вы уверены?"
-          name="delete-location"
-          buttonText="Да"
-        />
+        <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onBGClick={handlePopupBGClick} onAddPlace={handleAddPlace} />        
+        <DeletePlacePopup isOpen={deletePlaceConfirm.isOpen} onClose={closeAllPopups} onBGClick={handlePopupBGClick}
+          card={deletePlaceConfirm.card} onCardDelete={handleCardDelete} />
         <ImagePopup card={selectedCard} onClose={closeAllPopups} onBGClick={handlePopupBGClick}/>
       </div>
     </CurrentUserContext.Provider>
