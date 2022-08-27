@@ -52,22 +52,27 @@ function App() {
 
   const handleEditProfileClick = () => {
     setIsEditProfilePopupOpen(true);
+    document.addEventListener('keydown', handleKeyDown);
   }
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
+    document.addEventListener('keydown', handleKeyDown);
   }
 
   const handleAddPlaceClick = () => {
     setIsAddPlacePopupOpen(true);
+    document.addEventListener('keydown', handleKeyDown);
   }
 
   const handleCardClick = (card) => {
     setSelectedCard(card);
+    document.addEventListener('keydown', handleKeyDown);
   }
 
   const handleDeleteClick = (card) => {
     setDeletePlaceConfirm({ isOpen: true, card: card });
+    document.addEventListener('keydown', handleKeyDown);
   }
 
   const closeAllPopups = () => {
@@ -76,6 +81,7 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setDeletePlaceConfirm({ isOpen: false, card: {} });
     setSelectedCard(null);
+    document.removeEventListener('keydown', handleKeyDown);
   }
 
   /*обработчик закрытия попапа по нажатию на фон*/
@@ -83,6 +89,12 @@ function App() {
     if (evt.target.classList.contains('popup__container')) {
       closeAllPopups();
     }
+  }
+
+  const handleKeyDown = (evt) =>{
+    if (evt.keyCode === 27) {
+      closeAllPopups();
+    }  
   }
 
   const handleUpdateUser = (objUserInfo) => {
@@ -176,14 +188,14 @@ function App() {
         />
         <Footer />
         <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onBGClick={handlePopupBGClick}
-          onUpdateUser={handleUpdateUser} buttonState={buttonEditProfie} />
+          onKeyDown={handleKeyDown} onUpdateUser={handleUpdateUser} buttonState={buttonEditProfie} />
         <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onBGClick={handlePopupBGClick}
-          onUpdateAvatar={handleUpdateAvatar} buttonState={buttonEditAvatar} />
+          onKeyDown={handleKeyDown} onUpdateAvatar={handleUpdateAvatar} buttonState={buttonEditAvatar} />
         <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onBGClick={handlePopupBGClick}
-          onAddPlace={handleAddPlace} buttonState={buttonAddPlace} />
+          onKeyDown={handleKeyDown} onAddPlace={handleAddPlace} buttonState={buttonAddPlace} />
         <DeletePlacePopup isOpen={deletePlaceConfirm.isOpen} onClose={closeAllPopups} onBGClick={handlePopupBGClick}
-          card={deletePlaceConfirm.card} onCardDelete={handleCardDelete} buttonState={buttonDeletePlace} />
-        <ImagePopup card={selectedCard} onClose={closeAllPopups} onBGClick={handlePopupBGClick} />
+          onKeyDown={handleKeyDown} card={deletePlaceConfirm.card} onCardDelete={handleCardDelete} buttonState={buttonDeletePlace} />
+        <ImagePopup card={selectedCard} onClose={closeAllPopups} onBGClick={handlePopupBGClick} onKeyDown={handleKeyDown}/>
       </div>
     </CurrentUserContext.Provider>
   );
