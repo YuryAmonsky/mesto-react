@@ -22,7 +22,7 @@ function AddPlacePopup({ onAddPlace, isOpen, ...commonProps}) {
       setName('');
       setLink('');
     }
-  }, [isOpen])
+  }, [isOpen]);
 
   return (
     <PopupWithForm
