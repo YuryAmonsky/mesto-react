@@ -84,9 +84,9 @@ function App() {
     document.removeEventListener('keydown', handleKeyDown);
     //setButtonState({ text: '', disabled: true });
     setButtonEditProfile({ text: '5Сохранить', disabled: false });
-    /*setButtonEditAvatar({ text: 'Сохранить', disabled: false });
+    setButtonEditAvatar({ text: 'Сохранить', disabled: false });
     setButtonAddPlace({ text: 'Создать', disabled: true});
-    setButtonDeletePlace({ text: 'Сохранить', disabled: false });*/
+    /*setButtonDeletePlace({ text: 'Сохранить', disabled: false });*/
   }
 
   /*обработчик закрытия попапа по нажатию на фон*/
@@ -187,15 +187,15 @@ function App() {
   }
   
   const handleEditProfileValidate = React.useCallback((isValid)=>{
-    setButtonEditProfile({disabled: !isValid, text:"4Сохранить"});//...buttonEditProfile});    
+    setButtonEditProfile({disabled: !isValid, text:"4Сохранить"});
   },[]);
 
   const handleEditAvatarValidate = React.useCallback((isValid)=>{
-    setButtonEditProfile({disabled: !isValid, text:"4Сохранить"});//...buttonEditProfile});    
+    setButtonEditAvatar({disabled: !isValid, text:"4Сохранить"});
   },[]);
 
   const handleAddPlaceValidate = React.useCallback((isValid)=>{
-    setButtonEditProfile({disabled: !isValid, text:"4Сохранить"});//...buttonEditProfile});    
+    setButtonAddPlace({disabled: !isValid, text:"4Сохранить"});
   },[]);
   /*
   const handleFormValidate = React.useCallback((isValid, formName)=>{
@@ -252,7 +252,7 @@ function App() {
           onBGClick={handlePopupBGClick}
           onKeyDown={handleKeyDown} 
           onUpdateAvatar={handleUpdateAvatar} 
-          onFormValidate={null} 
+          onFormValidate={handleEditAvatarValidate} 
           buttonState={buttonEditAvatar} 
         />
         <AddPlacePopup 
@@ -261,7 +261,7 @@ function App() {
           onBGClick={handlePopupBGClick}
           onKeyDown={handleKeyDown} 
           onAddPlace={handleAddPlace} 
-          onFormValidate={null} 
+          onFormValidate={handleAddPlaceValidate} 
           buttonState={buttonAddPlace} 
         /> 
         <DeletePlacePopup 
