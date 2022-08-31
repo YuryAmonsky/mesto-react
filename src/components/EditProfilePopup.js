@@ -2,7 +2,7 @@ import React from "react";
 import PopupWithForm from './PopupWithForm';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-function EditProfilePopup({onUpdateUser, onFormValidate, isOpen, ...commonProps}) {
+function EditProfilePopup({isOpen, onUpdateUser, onFormValidate, ...commonProps}) {
   /**Пока вводим текст в поле просто проверяем валидный инпут или нет, но не показываем ошибку.
    * Если инпут не валидный делаем кнопку неактивной, ошибку не показываем.
    * Ошибку показываем при потере инпутом фокуса или отсутствии ввода в течение 5 секунд.
@@ -23,12 +23,12 @@ function EditProfilePopup({onUpdateUser, onFormValidate, isOpen, ...commonProps}
     
   const handleNameChange = (evt) => {      
     setName(evt.target.value);
-    if(!isNameValid) setNameErrorHint(evt.target.validationMessage);
+    if(nameErrorHint) setNameErrorHint(evt.target.validationMessage);
   }
 
   const handleDescriptionChange = (evt) => {     
     setDescription(evt.target.value);
-    if(!isDescriptionValid) setDescriptionErrorHint(evt.target.validationMessage);    
+    if(descriptionErrorHint) setDescriptionErrorHint(evt.target.validationMessage);    
   }
   
   const handleNameBlur = (evt)=>{
@@ -98,7 +98,7 @@ function EditProfilePopup({onUpdateUser, onFormValidate, isOpen, ...commonProps}
 
   React.useEffect(()=>{
     onFormValidate(isNameValid && isDescriptionValid);
-  }, [isNameValid, isDescriptionValid]);
+  }, [isNameValid, isDescriptionValid, onFormValidate]);
  
   return (
     <PopupWithForm
