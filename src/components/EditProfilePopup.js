@@ -23,14 +23,12 @@ function EditProfilePopup({onUpdateUser, onFormValidate, isOpen, ...commonProps}
     
   const handleNameChange = (evt) => {      
     setName(evt.target.value);
-    if(!isNameValid) setNameErrorHint(inputName.current.validationMessage);
-    setIsNameValid(inputName.current.validity.valid);
+    if(!isNameValid) setNameErrorHint(evt.target.validationMessage);
   }
 
   const handleDescriptionChange = (evt) => {     
     setDescription(evt.target.value);
-    if(!isDescriptionValid) setDescriptionErrorHint(evt.target.validationMessage);
-    setIsDescriptionValid(evt.target.validity.valid);
+    if(!isDescriptionValid) setDescriptionErrorHint(evt.target.validationMessage);    
   }
   
   const handleNameBlur = (evt)=>{
@@ -69,8 +67,8 @@ function EditProfilePopup({onUpdateUser, onFormValidate, isOpen, ...commonProps}
       if(!isNameValid && prevInputValue.current===name){
         setNameErrorHint(errorText);
       }
-    }
-   
+    }    
+    setIsNameValid(inputName.current.validity.valid);
     if (timer.current) clearTimeout(timer.current);
     prevInputValue.current = name;    
     timer.current = setTimeout(()=>{cbCheckInputCompletion(inputName.current.validationMessage)}, 5000);
@@ -88,7 +86,7 @@ function EditProfilePopup({onUpdateUser, onFormValidate, isOpen, ...commonProps}
           setDescriptionErrorHint(errorText);
         }
       }
-     
+      setIsDescriptionValid(inputDescription.current.validity.valid);
       if (timer.current) clearTimeout(timer.current);
       prevInputValue.current = description;    
       timer.current = setTimeout(()=>{cbCheckInputCompletion(inputDescription.current.validationMessage)}, 5000);
