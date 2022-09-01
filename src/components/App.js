@@ -84,8 +84,8 @@ function App() {
     document.removeEventListener('keydown', handleKeyDown);
     //setButtonState({ text: '', disabled: true });
     setButtonEditProfile({ text: '5Сохранить', disabled: false });
-    setButtonEditAvatar({ text: 'Сохранить', disabled: false });
-    setButtonAddPlace({ text: 'Создать', disabled: true});
+    setButtonEditAvatar({ text: '5Сохранить', disabled: false });
+    setButtonAddPlace({ text: '5Создать', disabled: true});
     /*setButtonDeletePlace({ text: 'Сохранить', disabled: false });*/
   }
 
@@ -195,7 +195,7 @@ function App() {
   },[]);
 
   const handleAddPlaceValidate = React.useCallback((isValid)=>{
-    setButtonAddPlace({disabled: !isValid, text:"4Сохранить"});
+    setButtonAddPlace({disabled: !isValid, text:"4Создать"});
   },[]);
   /*
   const handleFormValidate = React.useCallback((isValid, formName)=>{
