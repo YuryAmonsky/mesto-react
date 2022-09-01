@@ -1,20 +1,26 @@
-import React from "react";
+/** Валидация формы происходит по схеме:
+ * Пока вводим текст в поле просто проверяем валидный инпут или нет, но не показываем ошибку.
+ * Если инпут не валидный делаем кнопку неактивной, ошибку не показываем.
+ * Ошибку показываем при потере инпутом фокуса или отсутствии ввода в течение 5 секунд.
+ * в onFormValidate из App.js проверяется все ли инпуты валидны и в соответсвии с этим меняется состояние кнопки сабмита.
+*/
+import { useState, useRef, useEffect } from "react";
 import PopupWithForm from './PopupWithForm';
 
 function AddPlacePopup({ isOpen, onAddPlace, onFormValidate, ...commonProps }) {
-  const inputName = React.useRef();
-  const inputLink = React.useRef();
+  const inputName = useRef();
+  const inputLink = useRef();
   /**isInitialState используется, 
    * для срабатывания эффектов только в определенных ситуациях*/
-  let isInitialState = React.useRef(true);
-  let timer = React.useRef(0);
-  let prevInputValue = React.useRef('');
-  const [name, setName] = React.useState('');
-  const [link, setLink] = React.useState('');
-  const [isNameValid, setIsNameValid] = React.useState(false);
-  const [isLinkValid, setIsLinkValid] = React.useState(false);
-  const [nameErrorHint, setNameErrorHint] = React.useState('');
-  const [linkErrorHint, setLinkErrorHint] = React.useState('');
+  let isInitialState = useRef(true);
+  let timer = useRef(0);
+  let prevInputValue = useRef('');
+  const [name, setName] = useState('');
+  const [link, setLink] = useState('');
+  const [isNameValid, setIsNameValid] = useState(false);
+  const [isLinkValid, setIsLinkValid] = useState(false);
+  const [nameErrorHint, setNameErrorHint] = useState('');
+  const [linkErrorHint, setLinkErrorHint] = useState('');
 
   const handleNameChange = (evt) => {
     if (isInitialState.current) isInitialState.current = false;
@@ -44,7 +50,7 @@ function AddPlacePopup({ isOpen, onAddPlace, onFormValidate, ...commonProps }) {
   }
 
   /**Инициализация инпутов при закрытии попапа*/
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isOpen) {
       setName('');
       setLink('');
@@ -59,7 +65,7 @@ function AddPlacePopup({ isOpen, onAddPlace, onFormValidate, ...commonProps }) {
   /**показ ошибки при отсутствии ввода в поле name в течение 5сек 
    * в случае невалидного значения инпута
   */
-  React.useEffect(() => {
+  useEffect(() => {
     const cbCheckInputCompletion = (errorText) => {
       if (!isNameValid && prevInputValue.current === name) {
         setNameErrorHint(errorText);
@@ -79,7 +85,7 @@ function AddPlacePopup({ isOpen, onAddPlace, onFormValidate, ...commonProps }) {
   /**показ ошибки при отсутствии ввода в поле link в течение 5сек 
   * в случае невалидного значения инпута
  */
-  React.useEffect(() => {
+  useEffect(() => {
     const cbCheckInputCompletion = (errorText) => {
       if (!isLinkValid && prevInputValue.current === link) {
         setLinkErrorHint(errorText);
@@ -97,7 +103,7 @@ function AddPlacePopup({ isOpen, onAddPlace, onFormValidate, ...commonProps }) {
   }, [isOpen, link, isLinkValid]);
 
 
-  React.useEffect(() => {
+  useEffect(() => {
     onFormValidate(isNameValid && isLinkValid);
   }, [isNameValid, isLinkValid, onFormValidate]);
 
