@@ -31,7 +31,7 @@ function App() {
   /**стейт переменные кнопок сабмита форм
    * изменяются при выполнении запросов к серверу и валидации форм  */
   const [buttonEditProfile, setButtonEditProfile] = useState({ text: '1Сохранить', disabled: false });
-  const [buttonEditAvatar, setButtonEditAvatar] = useState({ text: 'Сохранить', disabled: false });
+  const [buttonEditAvatar, setButtonEditAvatar] = useState({ text: 'Сохранить', disabled: true });
   const [buttonAddPlace, setButtonAddPlace] = useState({ text: 'Создать', disabled: true });
   const [buttonDeletePlace, setButtonDeletePlace] = useState({ text: 'Да', disabled: false });
   //const [buttonState, setButtonState] = useState({text:'', disabled:true});
@@ -83,7 +83,7 @@ function App() {
     setSelectedCard(null);
     document.removeEventListener('keydown', handleKeyDown);
     setButtonEditProfile({ text: 'Сохранить', disabled: false });
-    setButtonEditAvatar({ text: 'Сохранить', disabled: false });
+    setButtonEditAvatar({ text: 'Сохранить', disabled: true });
     setButtonAddPlace({ text: 'Создать', disabled: true });
   }
 
@@ -143,7 +143,7 @@ function App() {
         alert(`Ошибка добавления карточки:\n ${err.status}\n ${err.text}`);
       })
       .finally(() => {
-        setButtonAddPlace({ text: 'Создать', disabled: true });
+        setButtonAddPlace({ text: 'Создать', disabled: false });
       });
   }
 

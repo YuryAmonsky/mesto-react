@@ -56,8 +56,8 @@ function AddPlacePopup({ isOpen, onAddPlace, onFormValidate, ...commonProps }) {
       setLink('');
       setNameErrorHint('');
       setLinkErrorHint('');
-      setIsNameValid(false);
-      setIsLinkValid(false);
+      //setIsNameValid(false);
+      //setIsLinkValid(false);
       isInitialState.current = true;
     }
   }, [isOpen]);

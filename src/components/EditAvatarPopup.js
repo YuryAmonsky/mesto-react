@@ -8,8 +8,7 @@
 import { useState, useRef, useEffect } from "react";
 import PopupWithForm from './PopupWithForm';
 
-function EditAvatarPopup({ isOpen, onUpdateAvatar, onFormValidate, ...commonProps }) {
-  //const currentUser = useContext(CurrentUserContext);
+function EditAvatarPopup({ isOpen, onUpdateAvatar, onFormValidate, ...commonProps }) {  
   const avatarLink = useRef();
   /**isInitialState используется, 
    * для срабатывания эффектов только в определенных ситуациях*/
@@ -38,7 +37,7 @@ function EditAvatarPopup({ isOpen, onUpdateAvatar, onFormValidate, ...commonProp
   /**Инициализация инпутов при закрытии попапа значениями из currentUser */
   useEffect(() => {
     if (!isOpen) {
-      setLink('');
+      setLink('');      
       setLinkErrorHint('');
       isInitialState.current = true;
     }
@@ -82,8 +81,9 @@ function EditAvatarPopup({ isOpen, onUpdateAvatar, onFormValidate, ...commonProp
         name="inputEditAvatar"
         id="input-edit-avatar"
         type="url"
-        placeholder="Ссылка на картинку"
+        placeholder="Ссылка на картинку"         
         required
+        value={link}
         autoComplete="off"
         onInput={handleLinkChange}
         onBlur={handleLinkBlur}
