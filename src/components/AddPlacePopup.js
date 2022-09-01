@@ -126,6 +126,7 @@ function AddPlacePopup({ isOpen, onAddPlace, onFormValidate, ...commonProps }) {
         minLength="2"
         maxLength="30"
         required
+        autoComplete = "off"
         onInput={handleNameChange}
         onBlur={handleNameBlur}
       />
@@ -143,6 +144,7 @@ function AddPlacePopup({ isOpen, onAddPlace, onFormValidate, ...commonProps }) {
         placeholder="Ссылка на картинку"
         value={link}
         required
+        autoComplete = "off"
         onInput={handleLinkChange}
         onBlur={handleLinkBlur}
       />

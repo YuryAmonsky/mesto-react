@@ -12,6 +12,9 @@ function EditProfilePopup({ isOpen, onUpdateUser, onFormValidate, ...commonProps
   const currentUser = useContext(CurrentUserContext);
   const inputName = useRef();
   const inputDescription = useRef();
+  /**isInitialState используется, 
+   * для срабатывания эффектов только в определенных ситуациях*/
+  let isInitialState = useRef(true);
   let timer = useRef(0);
   let prevInputValue = useRef('');
   const [name, setName] = useState('');
@@ -22,11 +25,13 @@ function EditProfilePopup({ isOpen, onUpdateUser, onFormValidate, ...commonProps
   const [descriptionErrorHint, setDescriptionErrorHint] = useState('');
 
   const handleNameChange = (evt) => {
+    if (isInitialState.current) isInitialState.current = false;
     setName(evt.target.value);
     if (nameErrorHint) setNameErrorHint(evt.target.validationMessage);
   }
 
   const handleDescriptionChange = (evt) => {
+    if (isInitialState.current) isInitialState.current = false;
     setDescription(evt.target.value);
     if (descriptionErrorHint) setDescriptionErrorHint(evt.target.validationMessage);
   }
@@ -56,6 +61,7 @@ function EditProfilePopup({ isOpen, onUpdateUser, onFormValidate, ...commonProps
       setDescription(currentUser.about);
       setNameErrorHint('');
       setDescriptionErrorHint('');
+      isInitialState.current = true;
     }
   }, [isOpen, currentUser]);
 
@@ -68,14 +74,16 @@ function EditProfilePopup({ isOpen, onUpdateUser, onFormValidate, ...commonProps
         setNameErrorHint(errorText);
       }
     }
-    setIsNameValid(inputName.current.validity.valid);
-    if (timer.current) clearTimeout(timer.current);
-    prevInputValue.current = name;
-    timer.current = setTimeout(() => { cbCheckInputCompletion(inputName.current.validationMessage) }, 5000);
+    if (isOpen && !isInitialState.current) {
+      setIsNameValid(inputName.current.validity.valid);
+      if (timer.current) clearTimeout(timer.current);
+      prevInputValue.current = name;
+      timer.current = setTimeout(() => { cbCheckInputCompletion(inputName.current.validationMessage) }, 5000);
+    }  
     return () => {
       if (timer.current) clearTimeout(timer.current);
     }
-  }, [name, isNameValid]);
+  }, [isOpen, name, isNameValid]);
 
   /**показ ошибки при отсутствии ввода в поле description в течение 5сек 
   * в случае невалидного значения инпута
@@ -86,14 +94,16 @@ function EditProfilePopup({ isOpen, onUpdateUser, onFormValidate, ...commonProps
         setDescriptionErrorHint(errorText);
       }
     }
-    setIsDescriptionValid(inputDescription.current.validity.valid);
-    if (timer.current) clearTimeout(timer.current);
-    prevInputValue.current = description;
-    timer.current = setTimeout(() => { cbCheckInputCompletion(inputDescription.current.validationMessage) }, 5000);
+    if (isOpen && !isInitialState.current) {
+      setIsDescriptionValid(inputDescription.current.validity.valid);
+      if (timer.current) clearTimeout(timer.current);
+      prevInputValue.current = description;
+      timer.current = setTimeout(() => { cbCheckInputCompletion(inputDescription.current.validationMessage) }, 5000);
+    }  
     return () => {
       if (timer.current) clearTimeout(timer.current);
     }
-  }, [description, isDescriptionValid]);
+  }, [isOpen, description, isDescriptionValid]);
 
 
   useEffect(() => {
@@ -118,6 +128,7 @@ function EditProfilePopup({ isOpen, onUpdateUser, onFormValidate, ...commonProps
         minLength="2"
         maxLength="40"
         required
+        autoComplete = "off"
         onInput={handleNameChange}
         onBlur={handleNameBlur}
       />
@@ -134,6 +145,7 @@ function EditProfilePopup({ isOpen, onUpdateUser, onFormValidate, ...commonProps
         minLength="2"
         maxLength="200"
         required
+        autoComplete = "off"
         onInput={handleDescriptionChange}
         onBlur={handleDescriptionBlur}
       />

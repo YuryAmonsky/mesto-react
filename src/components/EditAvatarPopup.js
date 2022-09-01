@@ -5,20 +5,23 @@
  * в onFormValidate из App.js проверяется все ли инпуты валидны и в соответсвии с этим меняется состояние кнопки сабмита.
 */
 
-import { useContext, useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import PopupWithForm from './PopupWithForm';
-import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function EditAvatarPopup({ isOpen, onUpdateAvatar, onFormValidate, ...commonProps }) {
-  const currentUser = useContext(CurrentUserContext);
+  //const currentUser = useContext(CurrentUserContext);
   const avatarLink = useRef();
+  /**isInitialState используется, 
+   * для срабатывания эффектов только в определенных ситуациях*/
+  let isInitialState = useRef(true);
   let timer = useRef(0);
   let prevInputValue = useRef('');
   const [link, setLink] = useState('');
-  const [isLinkValid, setIsLinkValid] = useState(true);
+  const [isLinkValid, setIsLinkValid] = useState(false);
   const [linkErrorHint, setLinkErrorHint] = useState('');
 
   const handleLinkChange = (evt) => {
+    if (isInitialState.current) isInitialState.current = false;
     setLink(evt.target.value);
     if (linkErrorHint) setLinkErrorHint(evt.target.validationMessage);
   }
@@ -35,10 +38,11 @@ function EditAvatarPopup({ isOpen, onUpdateAvatar, onFormValidate, ...commonProp
   /**Инициализация инпутов при закрытии попапа значениями из currentUser */
   useEffect(() => {
     if (!isOpen) {
-      avatarLink.current.value = currentUser.avatar;
+      setLink('');
       setLinkErrorHint('');
+      isInitialState.current = true;
     }
-  }, [isOpen, currentUser]);
+  }, [isOpen]);
 
   /**показ ошибки при отсутствии ввода в поле link в течение 5сек 
    * в случае невалидного значения инпута
@@ -49,14 +53,16 @@ function EditAvatarPopup({ isOpen, onUpdateAvatar, onFormValidate, ...commonProp
         setLinkErrorHint(errorText);
       }
     }
-    setIsLinkValid(avatarLink.current.validity.valid);
-    if (timer.current) clearTimeout(timer.current);
-    prevInputValue.current = link;
-    timer.current = setTimeout(() => { cbCheckInputCompletion(avatarLink.current.validationMessage) }, 5000);
+    if (isOpen && !isInitialState.current) {
+      setIsLinkValid(avatarLink.current.validity.valid);
+      if (timer.current) clearTimeout(timer.current);
+      prevInputValue.current = link;
+      timer.current = setTimeout(() => { cbCheckInputCompletion(avatarLink.current.validationMessage) }, 5000);
+    }
     return () => {
       if (timer.current) clearTimeout(timer.current);
     }
-  }, [link, isLinkValid]);
+  }, [isOpen, link, isLinkValid]);
 
   useEffect(() => {
     onFormValidate(isLinkValid);
@@ -78,6 +84,7 @@ function EditAvatarPopup({ isOpen, onUpdateAvatar, onFormValidate, ...commonProp
         type="url"
         placeholder="Ссылка на картинку"
         required
+        autoComplete="off"
         onInput={handleLinkChange}
         onBlur={handleLinkBlur}
       />
