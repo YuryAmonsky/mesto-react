@@ -51,28 +51,23 @@ function App() {
   }, []);
 
   const handleEditProfileClick = () => {
-    setIsEditProfilePopupOpen(true);
-    document.addEventListener('keydown', handleKeyDown);
+    setIsEditProfilePopupOpen(true);    
   }
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
-    document.addEventListener('keydown', handleKeyDown);
   }
 
   const handleAddPlaceClick = () => {
     setIsAddPlacePopupOpen(true);
-    document.addEventListener('keydown', handleKeyDown);
   }
 
   const handleDeleteClick = (card) => {
     setDeletePlaceConfirm({ isOpen: true, card: card });
-    document.addEventListener('keydown', handleKeyDown);
   }
 
   const handleCardClick = (card) => {
     setSelectedCard(card);
-    document.addEventListener('keydown', handleKeyDown);
   }
 
   const closeAllPopups = () => {
@@ -80,8 +75,7 @@ function App() {
     setIsEditAvatarPopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setDeletePlaceConfirm({ isOpen: false, card: {} });
-    setSelectedCard(null);
-    document.removeEventListener('keydown', handleKeyDown);
+    setSelectedCard(null);    
     setButtonEditProfile({ text: 'Сохранить', disabled: false });
     setButtonEditAvatar({ text: 'Сохранить', disabled: true });
     setButtonAddPlace({ text: 'Создать', disabled: true });
@@ -94,11 +88,11 @@ function App() {
     }
   }
   /*обработчик закрытия попапа по нажатию Esc*/
-  const handleKeyDown = (evt) => {
+  const handleKeyDown = useCallback((evt) => {
     if (evt.keyCode === 27) {
       closeAllPopups();
     }
-  }
+  },[]);
 
   const handleUpdateUser = (objUserInfo) => {
     setButtonEditProfile({ text: 'Сохранение', disabled: true });
@@ -187,6 +181,14 @@ function App() {
   const handleAddPlaceValidate = useCallback((isValid) => {
     setButtonAddPlace({ disabled: !isValid, text: "Создать" });
   }, []);
+  
+  useEffect(()=>{
+    if(isEditAvatarPopupOpen||isEditProfilePopupOpen||isAddPlacePopupOpen||deletePlaceConfirm.isOpen|| selectedCard){
+      document.addEventListener('keydown', handleKeyDown);
+    }else{
+      document.removeEventListener('keydown', handleKeyDown);
+    }    
+  },[isEditAvatarPopupOpen,isEditProfilePopupOpen,isAddPlacePopupOpen, deletePlaceConfirm.isOpen, selectedCard, handleKeyDown]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
