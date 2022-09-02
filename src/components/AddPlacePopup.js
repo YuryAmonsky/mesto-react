@@ -12,9 +12,9 @@ function AddPlacePopup({ isOpen, onAddPlace, onFormValidate, ...commonProps }) {
   const inputLink = useRef();
   /**isInitialState используется, 
    * для срабатывания эффектов только в определенных ситуациях*/
-  let isInitialState = useRef(true);
-  let timer = useRef(0);
-  let prevInputValue = useRef('');
+  const isInitialState = useRef(true);
+  const timer = useRef(0);
+  const prevInputValue = useRef('');
   const [name, setName] = useState('');
   const [link, setLink] = useState('');
   const [isNameValid, setIsNameValid] = useState(false);
@@ -55,9 +55,7 @@ function AddPlacePopup({ isOpen, onAddPlace, onFormValidate, ...commonProps }) {
       setName('');
       setLink('');
       setNameErrorHint('');
-      setLinkErrorHint('');
-      //setIsNameValid(false);
-      //setIsLinkValid(false);
+      setLinkErrorHint('');      
       isInitialState.current = true;
     }
   }, [isOpen]);

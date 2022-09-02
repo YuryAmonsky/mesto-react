@@ -12,9 +12,9 @@ function EditAvatarPopup({ isOpen, onUpdateAvatar, onFormValidate, ...commonProp
   const avatarLink = useRef();
   /**isInitialState используется, 
    * для срабатывания эффектов только в определенных ситуациях*/
-  let isInitialState = useRef(true);
-  let timer = useRef(0);
-  let prevInputValue = useRef('');
+  const isInitialState = useRef(true);
+  const timer = useRef(0);
+  const prevInputValue = useRef('');
   const [link, setLink] = useState('');
   const [isLinkValid, setIsLinkValid] = useState(false);
   const [linkErrorHint, setLinkErrorHint] = useState('');

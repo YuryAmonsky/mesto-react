@@ -14,9 +14,9 @@ function EditProfilePopup({ isOpen, onUpdateUser, onFormValidate, ...commonProps
   const inputDescription = useRef();
   /**isInitialState используется, 
    * для срабатывания эффектов только в определенных ситуациях*/
-  let isInitialState = useRef(true);
-  let timer = useRef(0);
-  let prevInputValue = useRef('');
+  const isInitialState = useRef(true);
+  const timer = useRef(0);
+  const prevInputValue = useRef('');
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [isNameValid, setIsNameValid] = useState(true);
