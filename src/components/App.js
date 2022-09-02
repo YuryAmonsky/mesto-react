@@ -28,57 +28,72 @@ function App() {
   });
   const [selectedCard, setSelectedCard] = useState(null);
 
-  /**стейт переменные кнопок сабмита форм
-   * изменяются при выполнении запросов к серверу и валидации форм  */
-  const [buttonEditProfile, setButtonEditProfile] = useState({ text: '1Сохранить', disabled: false });
+  /**стейт кнопок сабмита форм
+   *  Активность кнопки изменяется при выполнении запросов к серверу и валидации форм.
+   * Текст неактивной кнопки разный при выполнении запроса и валидации, 
+   * поэтому добавляю в стейт текст отдельным полем.
+  const [buttonEditProfile, setButtonEditProfile] = useState({ text: 'Сохранить', disabled: false });
   const [buttonEditAvatar, setButtonEditAvatar] = useState({ text: 'Сохранить', disabled: true });
   const [buttonAddPlace, setButtonAddPlace] = useState({ text: 'Создать', disabled: true });
-  const [buttonDeletePlace, setButtonDeletePlace] = useState({ text: 'Да', disabled: false });
-  //const [buttonState, setButtonState] = useState({text:'', disabled:true});
-
-  useEffect(() => {
-    Promise.all([
-      api.getUserInfo(),
-      api.loadLocations()
-    ])
-      .then((values) => {
-        setCurrentUser(values[0]);
-        setCards([...values[1]]);
-      }).catch(err => {
-        console.log(err.status);
-        alert(`Ошибка загрузки данных:\n ${err.status}\n ${err.text}`);
-      });
-  }, []);
+  const [buttonDeletePlace, setButtonDeletePlace] = useState({ text: 'Да', disabled: false });*/
+  const [submitButtonState, setSsubmitButtonState] = useState({ text: '', disabled: false });
+  //const [isSubmiButtonDisabled, setIsSubmiButtonDisabled] = useState(true);
 
   const handleEditProfileClick = () => {
-    setIsEditProfilePopupOpen(true);    
+    setIsEditProfilePopupOpen(true);
+    setSsubmitButtonState({ text: 'Сохранение', disabled: false });
+    //setIsSubmiButtonDisabled(false);
   }
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
+    setSsubmitButtonState({ text: 'Сохранение', disabled: true });
+    //setIsSubmiButtonDisabled(true);
   }
 
   const handleAddPlaceClick = () => {
     setIsAddPlacePopupOpen(true);
+    setSsubmitButtonState({ text: 'Создать', disabled: true });
+    //setIsSubmiButtonDisabled(true);
   }
 
   const handleDeleteClick = (card) => {
     setDeletePlaceConfirm({ isOpen: true, card: card });
+    setSsubmitButtonState({ text: 'Да', disabled: false });
+    //setIsSubmiButtonDisabled(false);
   }
 
   const handleCardClick = (card) => {
     setSelectedCard(card);
   }
 
-  const closeAllPopups = () => {
+  const closeAllPopups = (formName) => {
     setIsEditProfilePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setIsAddPlacePopupOpen(false);
-    setDeletePlaceConfirm({ isOpen: false, card: {} });
+    setDeletePlaceConfirm({ isOpen: false, card: {} });    
     setSelectedCard(null);    
+    /*
     setButtonEditProfile({ text: 'Сохранить', disabled: false });
     setButtonEditAvatar({ text: 'Сохранить', disabled: true });
-    setButtonAddPlace({ text: 'Создать', disabled: true });
+    setButtonAddPlace({ text: 'Создать', disabled: true });*/
+    /*
+    switch(formName){
+      case 'edit-profile':
+        //setSsubmitButtonState({text: 'Сохранить', disabled: false});
+        setIsSubmiButtondisabled(false);
+        break;
+      case 'edit-avatar':
+        //setSsubmitButtonState({text: 'Сохранить', disabled: true});
+        setIsSubmiButtondisabled(true);
+        break;
+      case 'new-location':
+        setSsubmitButtonState({text: 'Создать', disabled: true});
+        setIsSubmiButtondisabled(true);
+        break;
+      default:
+        break;
+    }*/
   }
 
   /*обработчик закрытия попапа по нажатию на фон*/
@@ -95,7 +110,9 @@ function App() {
   },[]);
 
   const handleUpdateUser = (objUserInfo) => {
-    setButtonEditProfile({ text: 'Сохранение', disabled: true });
+    //setButtonEditProfile({ text: 'Сохранение', disabled: true });
+    setSsubmitButtonState({ text: 'Сохранение', disabled: true });
+    //setIsSubmiButtonDisabled(true);
     api.setUserInfo(objUserInfo)
       .then(updatedUser => {
         setCurrentUser(updatedUser);
@@ -106,11 +123,15 @@ function App() {
         alert(`Ошибка обновления данных пользователя:\n ${err.status}\n ${err.text}`)
       })
       .finally(() => {
-        setButtonEditProfile({ text: 'Сохранить', disabled: false });
+        //setButtonEditProfile({ text: 'Сохранить', disabled: false });
+        setSsubmitButtonState({ text: 'Сохранить', disabled: false });
+        //setIsSubmiButtonDisabled(false);
       });
   }
   const handleUpdateAvatar = (link) => {
-    setButtonEditAvatar({ text: 'Загрузка', disabled: true });
+    //setButtonEditAvatar({ text: 'Загрузка', disabled: true });
+    setSsubmitButtonState({ text: 'Загрузка', disabled: true });
+    //setIsSubmiButtonDisabled(true);
     api.setAvatar(link)
       .then(updatedUser => {
         setCurrentUser(updatedUser);
@@ -121,12 +142,16 @@ function App() {
         alert(`Ошибка обновления аватара пользователя:\n ${err.status}\n ${err.text}`)
       })
       .finally(() => {
-        setButtonEditAvatar({ text: 'Сохранить', disabled: false });
+        //setButtonEditAvatar({ text: 'Сохранить', disabled: false });
+        setSsubmitButtonState({ text: 'Сохранить', disabled: false });
+        //setIsSubmiButtonDisabled(false);
       });
   }
 
   const handleAddPlace = (objNewCard) => {
-    setButtonAddPlace({ text: 'Добавление', disabled: true });
+    //setButtonAddPlace({ text: 'Добавление', disabled: true });
+    setSsubmitButtonState({ text: 'Добавление', disabled: true });
+    //setIsSubmiButtonDisabled(true);
     api.addNewLocation(objNewCard)
       .then(newCard => {
         setCards([newCard, ...cards]);
@@ -137,12 +162,16 @@ function App() {
         alert(`Ошибка добавления карточки:\n ${err.status}\n ${err.text}`);
       })
       .finally(() => {
-        setButtonAddPlace({ text: 'Создать', disabled: false });
+        //setButtonAddPlace({ text: 'Создать', disabled: false });
+        setSsubmitButtonState({ text: 'Создать', disabled: false });
+        //setIsSubmiButtonDisabled(false);
       });
   }
 
   const handleCardDelete = (card) => {
-    setButtonDeletePlace({ text: 'Удаление', disabled: true });
+    //setButtonDeletePlace({ text: 'Удаление', disabled: true });
+    setSsubmitButtonState({ text: 'Удаление', disabled: true });
+    //setIsSubmiButtonDisabled(true);
     api.deleteLocation(card._id)
       .then(res => {
         console.log(res);
@@ -154,7 +183,9 @@ function App() {
         alert(`Ошибка удаления карточки:\n ${err.status}\n ${err.text}`);
       })
       .finally(() => {
-        setButtonDeletePlace({ text: 'Да', disabled: false });
+        //setButtonDeletePlace({ text: 'Да', disabled: false });
+        setSsubmitButtonState({ text: 'Да', disabled: false });
+        //setIsSubmiButtonDisabled(false);
       });
   }
 
@@ -169,7 +200,7 @@ function App() {
         alert(`Ошибка загрузки данных карточки:\n ${err.status}\n ${err.text}`);
       });
   }
-
+/*
   const handleEditProfileValidate = useCallback((isValid) => {
     setButtonEditProfile({ disabled: !isValid, text: "Сохранить" });
   }, []);
@@ -182,6 +213,44 @@ function App() {
     setButtonAddPlace({ disabled: !isValid, text: "Создать" });
   }, []);
   
+  const handleFormValidate = useCallback((isValid) => {
+    setIs({ disabled: !isValid, text: "Сохранить" });
+  }, []);
+*/
+  const handleFormValidate = useCallback((isValid, formName)=>{
+    
+    switch(formName){
+      case 'edit-profile':
+        setSsubmitButtonState({disabled: !isValid, text:'Сохранить'});
+        break;
+      case 'edit-avatar':
+        setSsubmitButtonState({disabled: !isValid, text:'Сохранить'});
+        break;
+      case 'new-location':
+        setSsubmitButtonState({disabled: !isValid, text:'Создать'});
+        break;
+      default:
+
+        break;
+    }
+    //setIsSubmiButtonDisabled(!isValid);
+    //setSsubmitButtonState({disabled: !isValid, ...submitButtonState});
+  }, []); 
+  
+  useEffect(() => {
+    Promise.all([
+      api.getUserInfo(),
+      api.loadLocations()
+    ])
+      .then((values) => {
+        setCurrentUser(values[0]);
+        setCards([...values[1]]);
+      }).catch(err => {
+        console.log(err.status);
+        alert(`Ошибка загрузки данных:\n ${err.status}\n ${err.text}`);
+      });
+  }, []);
+
   useEffect(()=>{
     if(isEditAvatarPopupOpen||isEditProfilePopupOpen||isAddPlacePopupOpen||deletePlaceConfirm.isOpen|| selectedCard){
       document.addEventListener('keydown', handleKeyDown);
@@ -189,7 +258,7 @@ function App() {
       document.removeEventListener('keydown', handleKeyDown);
     }    
   },[isEditAvatarPopupOpen,isEditProfilePopupOpen,isAddPlacePopupOpen, deletePlaceConfirm.isOpen, selectedCard, handleKeyDown]);
-
+  
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -210,8 +279,8 @@ function App() {
           onBGClick={handlePopupBGClick}
           onKeyDown={handleKeyDown}
           onUpdateUser={handleUpdateUser}
-          onFormValidate={handleEditProfileValidate}
-          buttonState={buttonEditProfile}
+          onFormValidate={handleFormValidate}
+          buttonState={submitButtonState}         
         />
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
@@ -219,8 +288,8 @@ function App() {
           onBGClick={handlePopupBGClick}
           onKeyDown={handleKeyDown}
           onUpdateAvatar={handleUpdateAvatar}
-          onFormValidate={handleEditAvatarValidate}
-          buttonState={buttonEditAvatar}
+          onFormValidate={handleFormValidate}
+          buttonState={submitButtonState}
         />
         <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
@@ -228,8 +297,8 @@ function App() {
           onBGClick={handlePopupBGClick}
           onKeyDown={handleKeyDown}
           onAddPlace={handleAddPlace}
-          onFormValidate={handleAddPlaceValidate}
-          buttonState={buttonAddPlace}
+          onFormValidate={handleFormValidate}
+          buttonState={submitButtonState}
         />
         <DeletePlacePopup
           isOpen={deletePlaceConfirm.isOpen}
@@ -238,7 +307,7 @@ function App() {
           onKeyDown={handleKeyDown}
           card={deletePlaceConfirm.card}
           onCardDelete={handleCardDelete}
-          buttonState={buttonDeletePlace}
+          buttonState={submitButtonState}
         />
         <ImagePopup
           card={selectedCard}

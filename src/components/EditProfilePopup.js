@@ -107,7 +107,7 @@ function EditProfilePopup({ isOpen, onUpdateUser, onFormValidate, ...commonProps
 
 
   useEffect(() => {
-    onFormValidate(isNameValid && isDescriptionValid);
+    onFormValidate(isNameValid && isDescriptionValid, 'edit-profile');
   }, [isNameValid, isDescriptionValid, onFormValidate]);
 
   return (

@@ -64,7 +64,7 @@ function EditAvatarPopup({ isOpen, onUpdateAvatar, onFormValidate, ...commonProp
   }, [isOpen, link, isLinkValid]);
 
   useEffect(() => {
-    onFormValidate(isLinkValid);
+    onFormValidate(isLinkValid, 'edit-avatar');
   }, [isLinkValid, onFormValidate]);
 
   return (

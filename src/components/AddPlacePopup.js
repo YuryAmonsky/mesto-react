@@ -102,7 +102,7 @@ function AddPlacePopup({ isOpen, onAddPlace, onFormValidate, ...commonProps }) {
 
 
   useEffect(() => {
-    onFormValidate(isNameValid && isLinkValid);
+    onFormValidate(isNameValid && isLinkValid, 'new-location');
   }, [isNameValid, isLinkValid, onFormValidate]);
 
   return (
