@@ -8,8 +8,6 @@ import { useState, useRef, useEffect } from "react";
 import PopupWithForm from './PopupWithForm';
 
 function AddPlacePopup({ isOpen, onAddPlace, onFormValidate, ...commonProps }) {
-  const inputName = useRef();
-  const inputLink = useRef();
   /**isInitialState используется, 
    * для срабатывания эффектов только в определенных ситуациях*/
   const isInitialState = useRef(true);
@@ -17,31 +15,32 @@ function AddPlacePopup({ isOpen, onAddPlace, onFormValidate, ...commonProps }) {
   const prevInputValue = useRef('');
   const [name, setName] = useState('');
   const [link, setLink] = useState('');
-  const [isNameValid, setIsNameValid] = useState(false);
-  const [isLinkValid, setIsLinkValid] = useState(false);
+  const [nameValidity, setNameValidity] = useState({ isValid: false, message: '' });
+  const [linkValidity, setLinkValidity] = useState({ isValid: false, message: '' });
   const [nameErrorHint, setNameErrorHint] = useState('');
   const [linkErrorHint, setLinkErrorHint] = useState('');
 
   const handleNameChange = (evt) => {
     if (isInitialState.current) isInitialState.current = false;
     setName(evt.target.value);
-    if (nameErrorHint) setNameErrorHint(evt.target.validationMessage);
+    setNameValidity({ isValid: evt.target.validity.valid, message: evt.target.validationMessage });
   }
 
   const handleLinkChange = (evt) => {
     if (isInitialState.current) isInitialState.current = false;
     setLink(evt.target.value);
-    if (linkErrorHint) setLinkErrorHint(evt.target.validationMessage);
+    setLinkValidity({ isValid: evt.target.validity.valid, message: evt.target.validationMessage });
   }
 
   const handleNameBlur = (evt) => {
     if (timer.current) clearTimeout(timer.current);
-    setNameErrorHint(evt.target.validationMessage);
+    setNameErrorHint(nameValidity.message);
+
   }
 
   const handleLinkBlur = (evt) => {
     if (timer.current) clearTimeout(timer.current);
-    setLinkErrorHint(evt.target.validationMessage);
+    setLinkErrorHint(linkValidity.message);
   }
 
   const handleAddPlaceSubmit = (evt) => {
@@ -55,7 +54,7 @@ function AddPlacePopup({ isOpen, onAddPlace, onFormValidate, ...commonProps }) {
       setName('');
       setLink('');
       setNameErrorHint('');
-      setLinkErrorHint('');      
+      setLinkErrorHint('');
       isInitialState.current = true;
     }
   }, [isOpen]);
@@ -65,45 +64,46 @@ function AddPlacePopup({ isOpen, onAddPlace, onFormValidate, ...commonProps }) {
   */
   useEffect(() => {
     const cbCheckInputCompletion = (errorText) => {
-      if (!isNameValid && prevInputValue.current === name) {
+      if (!nameValidity.isValid && prevInputValue.current === name) {
         setNameErrorHint(errorText);
       }
     }
     if (isOpen && !isInitialState.current) {
-      setIsNameValid(inputName.current.validity.valid);
+      if (nameErrorHint) setNameErrorHint(nameValidity.message);
+      //setIsNameValid(inputName.current.validity.valid);
       if (timer.current) clearTimeout(timer.current);
       prevInputValue.current = name;
-      timer.current = setTimeout(() => { cbCheckInputCompletion(inputName.current.validationMessage) }, 5000);
+      timer.current = setTimeout(() => { cbCheckInputCompletion(nameValidity.message) }, 5000);
     }
     return () => {
       if (timer.current) clearTimeout(timer.current);
     }
-  }, [isOpen, name, isNameValid]);
+  }, [isOpen, name, nameErrorHint, nameValidity]);
 
   /**показ ошибки при отсутствии ввода в поле link в течение 5сек 
   * в случае невалидного значения инпута
  */
   useEffect(() => {
     const cbCheckInputCompletion = (errorText) => {
-      if (!isLinkValid && prevInputValue.current === link) {
+      if (!linkValidity.isValid && prevInputValue.current === link) {
         setLinkErrorHint(errorText);
       }
     }
     if (isOpen && !isInitialState.current) {
-      setIsLinkValid(inputLink.current.validity.valid);
+      if (linkErrorHint) setLinkErrorHint(linkValidity.message);
       if (timer.current) clearTimeout(timer.current);
       prevInputValue.current = link;
-      timer.current = setTimeout(() => { cbCheckInputCompletion(inputLink.current.validationMessage) }, 5000);
+      timer.current = setTimeout(() => { cbCheckInputCompletion(linkValidity.message) }, 5000);
     }
     return () => {
       if (timer.current) clearTimeout(timer.current);
     }
-  }, [isOpen, link, isLinkValid]);
+  }, [isOpen, link, linkErrorHint, linkValidity]);
 
 
   useEffect(() => {
-    onFormValidate(isNameValid && isLinkValid, 'new-location');
-  }, [isNameValid, isLinkValid, onFormValidate]);
+    onFormValidate(nameValidity.isValid && linkValidity.isValid, 'new-location');
+  }, [nameValidity.isValid, linkValidity.isValid, onFormValidate]);
 
   return (
     <PopupWithForm
@@ -114,7 +114,6 @@ function AddPlacePopup({ isOpen, onAddPlace, onFormValidate, ...commonProps }) {
       {...commonProps}
     >
       <input
-        ref={inputName}
         className={nameErrorHint ? "dialog-form__input dialog-form__input_invalid" : "dialog-form__input"}
         name="inputNewLocationName"
         id="input-new-location-name"
@@ -124,7 +123,7 @@ function AddPlacePopup({ isOpen, onAddPlace, onFormValidate, ...commonProps }) {
         minLength="2"
         maxLength="30"
         required
-        autoComplete = "off"
+        autoComplete="off"
         onInput={handleNameChange}
         onBlur={handleNameBlur}
       />
@@ -134,7 +133,6 @@ function AddPlacePopup({ isOpen, onAddPlace, onFormValidate, ...commonProps }) {
         {nameErrorHint}
       </span>
       <input
-        ref={inputLink}
         className={linkErrorHint ? "dialog-form__input dialog-form__input_invalid" : "dialog-form__input"}
         name="inputNewLocationLink"
         id="input-new-location-link"
@@ -142,7 +140,7 @@ function AddPlacePopup({ isOpen, onAddPlace, onFormValidate, ...commonProps }) {
         placeholder="Ссылка на картинку"
         value={link}
         required
-        autoComplete = "off"
+        autoComplete="off"
         onInput={handleLinkChange}
         onBlur={handleLinkBlur}
       />

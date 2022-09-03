@@ -10,8 +10,6 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function EditProfilePopup({ isOpen, onUpdateUser, onFormValidate, ...commonProps }) {
   const currentUser = useContext(CurrentUserContext);
-  const inputName = useRef();
-  const inputDescription = useRef();
   /**isInitialState используется, 
    * для срабатывания эффектов только в определенных ситуациях*/
   const isInitialState = useRef(true);
@@ -19,31 +17,31 @@ function EditProfilePopup({ isOpen, onUpdateUser, onFormValidate, ...commonProps
   const prevInputValue = useRef('');
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [isNameValid, setIsNameValid] = useState(true);
-  const [isDescriptionValid, setIsDescriptionValid] = useState(true);
+  const [nameValidity, setNameValidity] = useState({ isValid: true, message: '' });
+  const [descriptionValidity, setDescriptionValidity] = useState({ isValid: true, message: '' });
   const [nameErrorHint, setNameErrorHint] = useState('');
   const [descriptionErrorHint, setDescriptionErrorHint] = useState('');
 
   const handleNameChange = (evt) => {
     if (isInitialState.current) isInitialState.current = false;
     setName(evt.target.value);
-    if (nameErrorHint) setNameErrorHint(evt.target.validationMessage);
+    setNameValidity({ isValid: evt.target.validity.valid, message: evt.target.validationMessage });
   }
 
   const handleDescriptionChange = (evt) => {
     if (isInitialState.current) isInitialState.current = false;
     setDescription(evt.target.value);
-    if (descriptionErrorHint) setDescriptionErrorHint(evt.target.validationMessage);
+    setDescriptionValidity({ isValid: evt.target.validity.valid, message: evt.target.validationMessage });
   }
 
   const handleNameBlur = (evt) => {
     if (timer.current) clearTimeout(timer.current);
-    setNameErrorHint(evt.target.validationMessage);
+    setNameErrorHint(nameValidity.message);
   }
 
   const handleDescriptionBlur = (evt) => {
     if (timer.current) clearTimeout(timer.current);
-    setDescriptionErrorHint(evt.target.validationMessage);
+    setDescriptionErrorHint(descriptionValidity.message);
   }
 
   const handleSubmit = (evt) => {
@@ -70,45 +68,46 @@ function EditProfilePopup({ isOpen, onUpdateUser, onFormValidate, ...commonProps
   */
   useEffect(() => {
     const cbCheckInputCompletion = (errorText) => {
-      if (!isNameValid && prevInputValue.current === name) {
+      if (!nameValidity.isValid && prevInputValue.current === name) {
         setNameErrorHint(errorText);
       }
     }
     if (isOpen && !isInitialState.current) {
-      setIsNameValid(inputName.current.validity.valid);
+      if (nameErrorHint) setNameErrorHint(nameValidity.message);
+
       if (timer.current) clearTimeout(timer.current);
       prevInputValue.current = name;
-      timer.current = setTimeout(() => { cbCheckInputCompletion(inputName.current.validationMessage) }, 5000);
-    }  
+      timer.current = setTimeout(() => { cbCheckInputCompletion(nameValidity.message) }, 5000);
+    }
     return () => {
       if (timer.current) clearTimeout(timer.current);
     }
-  }, [isOpen, name, isNameValid]);
+  }, [isOpen, name, nameErrorHint, nameValidity]);
 
   /**показ ошибки при отсутствии ввода в поле description в течение 5сек 
   * в случае невалидного значения инпута
  */
   useEffect(() => {
     const cbCheckInputCompletion = (errorText) => {
-      if (!isDescriptionValid && prevInputValue.current === description) {
+      if (!descriptionValidity.isValid && prevInputValue.current === description) {
         setDescriptionErrorHint(errorText);
       }
     }
     if (isOpen && !isInitialState.current) {
-      setIsDescriptionValid(inputDescription.current.validity.valid);
+      if (descriptionErrorHint) setDescriptionErrorHint(descriptionValidity.message);
       if (timer.current) clearTimeout(timer.current);
       prevInputValue.current = description;
-      timer.current = setTimeout(() => { cbCheckInputCompletion(inputDescription.current.validationMessage) }, 5000);
-    }  
+      timer.current = setTimeout(() => { cbCheckInputCompletion(descriptionValidity.message) }, 5000);
+    }
     return () => {
       if (timer.current) clearTimeout(timer.current);
     }
-  }, [isOpen, description, isDescriptionValid]);
+  }, [isOpen, description, descriptionErrorHint, descriptionValidity]);
 
 
   useEffect(() => {
-    onFormValidate(isNameValid && isDescriptionValid, 'edit-profile');
-  }, [isNameValid, isDescriptionValid, onFormValidate]);
+    onFormValidate(nameValidity.isValid && descriptionValidity.isValid, 'edit-profile');
+  }, [nameValidity.isValid, descriptionValidity.isValid, onFormValidate]);
 
   return (
     <PopupWithForm
@@ -119,7 +118,6 @@ function EditProfilePopup({ isOpen, onUpdateUser, onFormValidate, ...commonProps
       {...commonProps}
     >
       <input
-        ref={inputName}
         className={nameErrorHint ? "dialog-form__input dialog-form__input_invalid" : "dialog-form__input"}
         name="inputEditProfileName"
         id="input-edit-profile-name"
@@ -128,7 +126,7 @@ function EditProfilePopup({ isOpen, onUpdateUser, onFormValidate, ...commonProps
         minLength="2"
         maxLength="40"
         required
-        autoComplete = "off"
+        autoComplete="off"
         onInput={handleNameChange}
         onBlur={handleNameBlur}
       />
@@ -136,7 +134,6 @@ function EditProfilePopup({ isOpen, onUpdateUser, onFormValidate, ...commonProps
         {nameErrorHint}
       </span>
       <input
-        ref={inputDescription}
         className={descriptionErrorHint ? "dialog-form__input dialog-form__input_invalid" : "dialog-form__input"}
         name="inputEditProfileAboutMe"
         id="input-edit-profile-about-me"
@@ -145,7 +142,7 @@ function EditProfilePopup({ isOpen, onUpdateUser, onFormValidate, ...commonProps
         minLength="2"
         maxLength="200"
         required
-        autoComplete = "off"
+        autoComplete="off"
         onInput={handleDescriptionChange}
         onBlur={handleDescriptionBlur}
       />
