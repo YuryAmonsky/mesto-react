@@ -32,35 +32,27 @@ function App() {
    *  Активность кнопки изменяется при выполнении запросов к серверу и валидации форм.
    * Текст неактивной кнопки разный при выполнении запроса и валидации, 
    * поэтому добавляю в стейт текст отдельным полем.
-  const [buttonEditProfile, setButtonEditProfile] = useState({ text: 'Сохранить', disabled: false });
-  const [buttonEditAvatar, setButtonEditAvatar] = useState({ text: 'Сохранить', disabled: true });
-  const [buttonAddPlace, setButtonAddPlace] = useState({ text: 'Создать', disabled: true });
-  const [buttonDeletePlace, setButtonDeletePlace] = useState({ text: 'Да', disabled: false });*/
+ */
   const [submitButtonState, setSsubmitButtonState] = useState({ text: '', disabled: false });
-  //const [isSubmiButtonDisabled, setIsSubmiButtonDisabled] = useState(true);
 
   const handleEditProfileClick = () => {
     setIsEditProfilePopupOpen(true);
-    setSsubmitButtonState({ text: 'Сохранение', disabled: false });
-    //setIsSubmiButtonDisabled(false);
+    setSsubmitButtonState({ text: 'Сохранить', disabled: false });
   }
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
-    setSsubmitButtonState({ text: 'Сохранение', disabled: true });
-    //setIsSubmiButtonDisabled(true);
+    setSsubmitButtonState({ text: 'Сохранить', disabled: true });
   }
 
   const handleAddPlaceClick = () => {
     setIsAddPlacePopupOpen(true);
     setSsubmitButtonState({ text: 'Создать', disabled: true });
-    //setIsSubmiButtonDisabled(true);
   }
 
   const handleDeleteClick = (card) => {
     setDeletePlaceConfirm({ isOpen: true, card: card });
     setSsubmitButtonState({ text: 'Да', disabled: false });
-    //setIsSubmiButtonDisabled(false);
   }
 
   const handleCardClick = (card) => {
@@ -73,27 +65,6 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setDeletePlaceConfirm({ isOpen: false, card: {} });    
     setSelectedCard(null);    
-    /*
-    setButtonEditProfile({ text: 'Сохранить', disabled: false });
-    setButtonEditAvatar({ text: 'Сохранить', disabled: true });
-    setButtonAddPlace({ text: 'Создать', disabled: true });*/
-    /*
-    switch(formName){
-      case 'edit-profile':
-        //setSsubmitButtonState({text: 'Сохранить', disabled: false});
-        setIsSubmiButtondisabled(false);
-        break;
-      case 'edit-avatar':
-        //setSsubmitButtonState({text: 'Сохранить', disabled: true});
-        setIsSubmiButtondisabled(true);
-        break;
-      case 'new-location':
-        setSsubmitButtonState({text: 'Создать', disabled: true});
-        setIsSubmiButtondisabled(true);
-        break;
-      default:
-        break;
-    }*/
   }
 
   /*обработчик закрытия попапа по нажатию на фон*/
@@ -110,9 +81,7 @@ function App() {
   },[]);
 
   const handleUpdateUser = (objUserInfo) => {
-    //setButtonEditProfile({ text: 'Сохранение', disabled: true });
     setSsubmitButtonState({ text: 'Сохранение', disabled: true });
-    //setIsSubmiButtonDisabled(true);
     api.setUserInfo(objUserInfo)
       .then(updatedUser => {
         setCurrentUser(updatedUser);
@@ -123,15 +92,11 @@ function App() {
         alert(`Ошибка обновления данных пользователя:\n ${err.status}\n ${err.text}`)
       })
       .finally(() => {
-        //setButtonEditProfile({ text: 'Сохранить', disabled: false });
         setSsubmitButtonState({ text: 'Сохранить', disabled: false });
-        //setIsSubmiButtonDisabled(false);
       });
   }
   const handleUpdateAvatar = (link) => {
-    //setButtonEditAvatar({ text: 'Загрузка', disabled: true });
     setSsubmitButtonState({ text: 'Загрузка', disabled: true });
-    //setIsSubmiButtonDisabled(true);
     api.setAvatar(link)
       .then(updatedUser => {
         setCurrentUser(updatedUser);
@@ -142,16 +107,12 @@ function App() {
         alert(`Ошибка обновления аватара пользователя:\n ${err.status}\n ${err.text}`)
       })
       .finally(() => {
-        //setButtonEditAvatar({ text: 'Сохранить', disabled: false });
         setSsubmitButtonState({ text: 'Сохранить', disabled: false });
-        //setIsSubmiButtonDisabled(false);
       });
   }
 
   const handleAddPlace = (objNewCard) => {
-    //setButtonAddPlace({ text: 'Добавление', disabled: true });
     setSsubmitButtonState({ text: 'Добавление', disabled: true });
-    //setIsSubmiButtonDisabled(true);
     api.addNewLocation(objNewCard)
       .then(newCard => {
         setCards([newCard, ...cards]);
@@ -162,16 +123,12 @@ function App() {
         alert(`Ошибка добавления карточки:\n ${err.status}\n ${err.text}`);
       })
       .finally(() => {
-        //setButtonAddPlace({ text: 'Создать', disabled: false });
         setSsubmitButtonState({ text: 'Создать', disabled: false });
-        //setIsSubmiButtonDisabled(false);
       });
   }
 
   const handleCardDelete = (card) => {
-    //setButtonDeletePlace({ text: 'Удаление', disabled: true });
     setSsubmitButtonState({ text: 'Удаление', disabled: true });
-    //setIsSubmiButtonDisabled(true);
     api.deleteLocation(card._id)
       .then(res => {
         console.log(res);
@@ -183,9 +140,7 @@ function App() {
         alert(`Ошибка удаления карточки:\n ${err.status}\n ${err.text}`);
       })
       .finally(() => {
-        //setButtonDeletePlace({ text: 'Да', disabled: false });
-        setSsubmitButtonState({ text: 'Да', disabled: false });
-        //setIsSubmiButtonDisabled(false);
+        setSsubmitButtonState({ text: 'Да', disabled: false });        
       });
   }
 
@@ -200,23 +155,7 @@ function App() {
         alert(`Ошибка загрузки данных карточки:\n ${err.status}\n ${err.text}`);
       });
   }
-/*
-  const handleEditProfileValidate = useCallback((isValid) => {
-    setButtonEditProfile({ disabled: !isValid, text: "Сохранить" });
-  }, []);
 
-  const handleEditAvatarValidate = useCallback((isValid) => {
-    setButtonEditAvatar({ disabled: !isValid, text: "Сохранить" });
-  }, []);
-
-  const handleAddPlaceValidate = useCallback((isValid) => {
-    setButtonAddPlace({ disabled: !isValid, text: "Создать" });
-  }, []);
-  
-  const handleFormValidate = useCallback((isValid) => {
-    setIs({ disabled: !isValid, text: "Сохранить" });
-  }, []);
-*/
   const handleFormValidate = useCallback((isValid, formName)=>{
     
     switch(formName){
@@ -232,9 +171,7 @@ function App() {
       default:
 
         break;
-    }
-    //setIsSubmiButtonDisabled(!isValid);
-    //setSsubmitButtonState({disabled: !isValid, ...submitButtonState});
+    }    
   }, []); 
   
   useEffect(() => {

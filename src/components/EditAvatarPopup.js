@@ -15,14 +15,13 @@ function EditAvatarPopup({ isOpen, onUpdateAvatar, onFormValidate, ...commonProp
   const isInitialState = useRef(true);
   const timer = useRef(0);
   const prevInputValue = useRef('');
-  const [link, setLink] = useState('');
-  const [isLinkValid, setIsLinkValid] = useState(false);
+  const [isLinkValid, setIsLinkValid] = useState(true);
   const [linkErrorHint, setLinkErrorHint] = useState('');
 
   const handleLinkChange = (evt) => {
     if (isInitialState.current) isInitialState.current = false;
-    setLink(evt.target.value);
-    if (linkErrorHint) setLinkErrorHint(evt.target.validationMessage);
+    setIsLinkValid(evt.target.validity.valid);
+    prevInputValue.current = avatarLink.current.value;    
   }
 
   const handleLinkBlur = (evt) => {
@@ -37,7 +36,8 @@ function EditAvatarPopup({ isOpen, onUpdateAvatar, onFormValidate, ...commonProp
   /**Инициализация инпутов при закрытии попапа значениями из currentUser */
   useEffect(() => {
     if (!isOpen) {
-      setLink('');      
+      avatarLink.current.value = '';
+      setIsLinkValid(true);
       setLinkErrorHint('');
       isInitialState.current = true;
     }
@@ -53,15 +53,14 @@ function EditAvatarPopup({ isOpen, onUpdateAvatar, onFormValidate, ...commonProp
       }
     }
     if (isOpen && !isInitialState.current) {
-      setIsLinkValid(avatarLink.current.validity.valid);
-      if (timer.current) clearTimeout(timer.current);
-      prevInputValue.current = link;
+      if (linkErrorHint) setLinkErrorHint(avatarLink.current.validationMessage);  
+      if (timer.current) clearTimeout(timer.current);      
       timer.current = setTimeout(() => { cbCheckInputCompletion(avatarLink.current.validationMessage) }, 5000);
     }
     return () => {
       if (timer.current) clearTimeout(timer.current);
     }
-  }, [isOpen, link, isLinkValid]);
+  }, [isOpen, linkErrorHint, isLinkValid]);
 
   useEffect(() => {
     onFormValidate(isLinkValid, 'edit-avatar');
@@ -83,7 +82,6 @@ function EditAvatarPopup({ isOpen, onUpdateAvatar, onFormValidate, ...commonProp
         type="url"
         placeholder="Ссылка на картинку"         
         required
-        value={link}
         autoComplete="off"
         onInput={handleLinkChange}
         onBlur={handleLinkBlur}
