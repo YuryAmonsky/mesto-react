@@ -1,6 +1,7 @@
 .content {
   margin: 40px auto 0;
   width: 100%;
+  align-self: stretch;
   min-width: 282px;
   max-width: 880px;
 }
@@ -9,5 +10,6 @@
   .content {
     margin: 42px 19px 0;
     width: calc(100% - 38px);
+
   }
 }

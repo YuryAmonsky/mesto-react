@@ -1,47 +1,30 @@
-/** Валидация формы происходит по схеме:
- *  Пока вводим текст в поле просто проверяем валидный инпут или нет, но не показываем ошибку.
-   * Если инпут не валидный делаем кнопку неактивной, ошибку не показываем.
-   * Ошибку показываем при потере инпутом фокуса или отсутствии ввода в течение 5 секунд.
-   * в onFormValidate из App.js проверяется все ли инпуты валидны и в соответсвии с этим меняется состояние кнопки сабмита.
-  */
-import { useContext, useState, useRef, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import PopupWithForm from './PopupWithForm';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import useFormValidator from "../hooks/useValidator";
 
 function EditProfilePopup({ isOpen, onUpdateUser, onFormValidate, ...commonProps }) {
   const currentUser = useContext(CurrentUserContext);
-  /**isInitialState используется, 
-   * для срабатывания эффектов только в определенных ситуациях*/
-  const isInitialState = useRef(true);
-  const timer = useRef(0);
-  const prevInputValue = useRef('');
+
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [nameValidity, setNameValidity] = useState({ isValid: true, message: '' });
-  const [descriptionValidity, setDescriptionValidity] = useState({ isValid: true, message: '' });
-  const [nameErrorHint, setNameErrorHint] = useState('');
-  const [descriptionErrorHint, setDescriptionErrorHint] = useState('');
-
+  const { validity, cbResetValidator, cbFormValidate } = useFormValidator('edit-profile', onFormValidate);
   const handleNameChange = (evt) => {
-    if (isInitialState.current) isInitialState.current = false;
     setName(evt.target.value);
-    setNameValidity({ isValid: evt.target.validity.valid, message: evt.target.validationMessage });
+    cbFormValidate(evt);
   }
 
   const handleDescriptionChange = (evt) => {
-    if (isInitialState.current) isInitialState.current = false;
     setDescription(evt.target.value);
-    setDescriptionValidity({ isValid: evt.target.validity.valid, message: evt.target.validationMessage });
+    cbFormValidate(evt);
   }
 
   const handleNameBlur = (evt) => {
-    if (timer.current) clearTimeout(timer.current);
-    setNameErrorHint(nameValidity.message);
+    cbFormValidate(evt);
   }
 
   const handleDescriptionBlur = (evt) => {
-    if (timer.current) clearTimeout(timer.current);
-    setDescriptionErrorHint(descriptionValidity.message);
+    cbFormValidate(evt);
   }
 
   const handleSubmit = (evt) => {
@@ -57,57 +40,10 @@ function EditProfilePopup({ isOpen, onUpdateUser, onFormValidate, ...commonProps
     if (!isOpen) {
       setName(currentUser.name);
       setDescription(currentUser.about);
-      setNameErrorHint('');
-      setDescriptionErrorHint('');
-      isInitialState.current = true;
+    } else {
+      cbResetValidator(isOpen, true);
     }
-  }, [isOpen, currentUser]);
-
-  /**показ ошибки при отсутствии ввода в поле name в течение 5сек 
-   * в случае невалидного значения инпута
-  */
-  useEffect(() => {
-    const cbCheckInputCompletion = (errorText) => {
-      if (!nameValidity.isValid && prevInputValue.current === name) {
-        setNameErrorHint(errorText);
-      }
-    }
-    if (isOpen && !isInitialState.current) {
-      if (nameErrorHint) setNameErrorHint(nameValidity.message);
-
-      if (timer.current) clearTimeout(timer.current);
-      prevInputValue.current = name;
-      timer.current = setTimeout(() => { cbCheckInputCompletion(nameValidity.message) }, 5000);
-    }
-    return () => {
-      if (timer.current) clearTimeout(timer.current);
-    }
-  }, [isOpen, name, nameErrorHint, nameValidity]);
-
-  /**показ ошибки при отсутствии ввода в поле description в течение 5сек 
-  * в случае невалидного значения инпута
- */
-  useEffect(() => {
-    const cbCheckInputCompletion = (errorText) => {
-      if (!descriptionValidity.isValid && prevInputValue.current === description) {
-        setDescriptionErrorHint(errorText);
-      }
-    }
-    if (isOpen && !isInitialState.current) {
-      if (descriptionErrorHint) setDescriptionErrorHint(descriptionValidity.message);
-      if (timer.current) clearTimeout(timer.current);
-      prevInputValue.current = description;
-      timer.current = setTimeout(() => { cbCheckInputCompletion(descriptionValidity.message) }, 5000);
-    }
-    return () => {
-      if (timer.current) clearTimeout(timer.current);
-    }
-  }, [isOpen, description, descriptionErrorHint, descriptionValidity]);
-
-
-  useEffect(() => {
-    onFormValidate(nameValidity.isValid && descriptionValidity.isValid, 'edit-profile');
-  }, [nameValidity.isValid, descriptionValidity.isValid, onFormValidate]);
+  }, [isOpen, currentUser, cbResetValidator]);
 
   return (
     <PopupWithForm
@@ -118,8 +54,8 @@ function EditProfilePopup({ isOpen, onUpdateUser, onFormValidate, ...commonProps
       {...commonProps}
     >
       <input
-        className={nameErrorHint ? "dialog-form__input dialog-form__input_invalid" : "dialog-form__input"}
-        name="inputEditProfileName"
+        className={validity.name?.shouldShowError ? "dialog-form__input dialog-form__input_invalid" : "dialog-form__input"}
+        name="name"
         id="input-edit-profile-name"
         type="text" placeholder="Имя"
         value={name}
@@ -131,11 +67,11 @@ function EditProfilePopup({ isOpen, onUpdateUser, onFormValidate, ...commonProps
         onBlur={handleNameBlur}
       />
       <span className="dialog-form__input-error input-edit-profile-name-error">
-        {nameErrorHint}
+        {validity.name?.shouldShowError ? validity.name?.error : ""}
       </span>
       <input
-        className={descriptionErrorHint ? "dialog-form__input dialog-form__input_invalid" : "dialog-form__input"}
-        name="inputEditProfileAboutMe"
+        className={validity.aboutMe?.shouldShowError ? "dialog-form__input dialog-form__input_invalid" : "dialog-form__input"}
+        name="aboutMe"
         id="input-edit-profile-about-me"
         type="text" placeholder="О себе"
         value={description}
@@ -147,7 +83,7 @@ function EditProfilePopup({ isOpen, onUpdateUser, onFormValidate, ...commonProps
         onBlur={handleDescriptionBlur}
       />
       <span className="dialog-form__input-error input-edit-profile-about-me-error">
-        {descriptionErrorHint}
+        {validity.aboutMe?.shouldShowError ? validity.aboutMe?.error : ""}
       </span>
     </PopupWithForm>
   );
