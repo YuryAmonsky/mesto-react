@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
 import PopupWithForm from './PopupWithForm';
-import useFormValidator from "../hooks/useValidator";
+import useFormValidator from "../hooks/useFormValidator";
 
 function EditAvatarPopup({ isOpen, onUpdateAvatar, onFormValidate, ...commonProps }) {
   const avatarLink = useRef();

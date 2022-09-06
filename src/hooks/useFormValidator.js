@@ -54,8 +54,8 @@ const useFormValidator = (formName, cbToggleButton) => {
     setIsFormValid(isValid);
     setValidity({});
   }, []);
-  /**показ ошибки при отсутствии ввода в поле name в течение 5сек 
-   * в случае невалидного значения инпута
+  /**показ ошибки при отсутствии ввода в инпут текстового типа в течение 5сек 
+   * после предыдущего ввода в случае невалидного значения инпута
   */
   useEffect(() => {
     const cbCheckInputCompletion = (inputName) => {
@@ -64,9 +64,8 @@ const useFormValidator = (formName, cbToggleButton) => {
       setValidity({
         ...validity,
         [inputName]:
-        {
-          valid: input.valid,
-          error: input.error,
+        {          
+          ...input,
           shouldShowError: shouldShow
         }
       });
