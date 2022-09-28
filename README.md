@@ -2,7 +2,7 @@
 
 ## Обзор
 Mesto - это фотохостинг, отображающий пользователю набор постов с фотографиями/изображениями их названиями и лайками.  
-Полное описание проекта можно посмотреть здесь: https://github.com/YuryAmonsky/Project-Mesto-  
+Полное описание проекта можно посмотреть [здесь](https://github.com/YuryAmonsky/Project-Mesto-)  
 Данный репозиторий представляет собой порт на React.js первой части проекта Mesto ([https://github.com/YuryAmonsky/mesto](https://github.com/YuryAmonsky/mesto)).   
   
 ## Основной функционал
