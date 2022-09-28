@@ -13,7 +13,7 @@
  - возможность отмечать посты лайком.  
   
 ## Какие возможности React.js использовались
-- Приложение создавалось на основе CRA (Create React APP).  
+- Приложение создавалось на основе CRA (Create React APP). Версия React - 18.2.0.  
 - При портировании в react app использовались функциональные компоненты с хуками состояния и эффектов.  
 - HTML разметка описывается посредством JSX (расширение javascript).  
 - При создании компонентов применялся метод поднятия стейта. Стейт-переменные были вынесены в родительский компонент App. Значения и обработчики пробрасываются в компоненты через "пропсы".
@@ -21,8 +21,16 @@
 - Данные пользователя, полученные с сервера, хранятся в глобальном стейте и передаются компонентам через контекст.  
 - Для валидации форм был написан кастомный хук useFormValidator.
 
-## Ссылка на демо-страницу
-- [https://yuryamonsky.github.io/mesto-react/](https://yuryamonsky.github.io/mesto-react/)
+## Ссылки
+**Демо**
+* [https://yuryamonsky.github.io/mesto-react/](https://yuryamonsky.github.io/mesto-react/)  
 
-
-
+**Другие репозитории проекта Mesto**
+* Общий ReadMe  
+  https://github.com/YuryAmonsky/Project-Mesto-  
+* Верстка основного контента и реализация функционала главной страницы.  
+   Репозиторий: https://github.com/YuryAmonsky/mesto  
+   Демо: https://yuryamonsky.github.io/mesto/  
+* Добавление функционала регистрации и авторизации пользователя (Текущий этап).  
+   Репозиторий: https://github.com/YuryAmonsky/react-mesto-auth  
+   Демо: https://yuryamonsky.github.io/react-mesto-auth/
