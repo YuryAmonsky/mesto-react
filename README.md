@@ -31,6 +31,10 @@ Mesto - это фотохостинг, отображающий пользова
 * Верстка основного контента и реализация функционала главной страницы.  
    Репозиторий: https://github.com/YuryAmonsky/mesto  
    Демо: https://yuryamonsky.github.io/mesto/  
-* Добавление функционала регистрации и авторизации пользователя (Текущий этап).  
+* Добавление функционала регистрации и авторизации пользователя.  
    Репозиторий: https://github.com/YuryAmonsky/react-mesto-auth  
-   Демо: https://yuryamonsky.github.io/react-mesto-auth/
+   Демо: https://yuryamonsky.github.io/react-mesto-auth/  
+* Создание собственного бекенда.  
+   https://github.com/YuryAmonsky/express-mesto-gha  
+* Фронтенд и бекенд. Деплой на публичный сервер.  
+   https://github.com/YuryAmonsky/react-mesto-api-full  
